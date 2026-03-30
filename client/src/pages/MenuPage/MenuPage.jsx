@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Plus, Minus, ShoppingBag, X, UtensilsCrossed } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Plus, Minus, ShoppingBag, X, UtensilsCrossed, Check } from 'lucide-react';
 import { menuSections, menuFilterCategories } from '../../data/menuData';
 import { cities, navOccasions } from '../../data/homeData';
 import './MenuPage.scss';
@@ -31,6 +31,14 @@ function DishCard({ dish, count, onAdd, onRemove }) {
           loading="lazy"
           onError={e => { e.target.src = `https://picsum.photos/200/200?u=dish-${dish.id}`; }}
         />
+      </div>
+      <div className="dish-card__info">
+        <img
+          src={dish.veg ? VEG_ICON : NON_VEG_ICON}
+          alt={dish.veg ? 'Veg' : 'Non-Veg'}
+          className="dish-card__veg-icon"
+        />
+        <p className="dish-card__name">{dish.name}</p>
         {count > 0 ? (
           <div className="dish-card__counter">
             <button
@@ -59,14 +67,6 @@ function DishCard({ dish, count, onAdd, onRemove }) {
           </button>
         )}
       </div>
-      <div className="dish-card__info">
-        <img
-          src={dish.veg ? VEG_ICON : NON_VEG_ICON}
-          alt={dish.veg ? 'Veg' : 'Non-Veg'}
-          className="dish-card__veg-icon"
-        />
-        <p className="dish-card__name">{dish.name}</p>
-      </div>
     </div>
   );
 }
@@ -80,14 +80,16 @@ function CuisineSection({ section, activeCategory, vegOnly, nonVegOnly, plateMap
     return true;
   });
 
+  // Calculate total items added from this section
+  const sectionItemsCount = section.items.reduce((sum, dish) => sum + (plateMap[dish.id] || 0), 0);
+
   if (items.length === 0) return null;
 
   return (
     <div className="menu-section" id={`section-${section.id}`}>
       <div className="menu-section__header">
         <span className="menu-section__emoji">{section.emoji}</span>
-        <h2 className="menu-section__title">{section.name}</h2>
-        <span className="menu-section__count">{items.length} dishes</span>
+        <h2 className="menu-section__title">{section.name} <span className="menu-section__count">{items.length} dishes</span></h2>
       </div>
       <div className="menu-section__grid">
         {items.map(dish => (
@@ -117,6 +119,7 @@ function EmptyState() {
 
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 export default function MenuPage() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const cuisineParam = searchParams.get('cuisine');
 
@@ -128,9 +131,16 @@ export default function MenuPage() {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedOccasion, setSelectedOccasion] = useState('');
   const [selectedPeople, setSelectedPeople] = useState('');
+  const [toast, setToast] = useState(null);
 
   const totalItems = Object.values(plate).reduce((sum, c) => sum + c, 0);
   const plateEntries = Object.entries(plate).filter(([, c]) => c > 0);
+
+  // Show toast notification
+  const showToast = useCallback((message) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 2500);
+  }, []);
 
   // Check if any sections have visible items
   const hasVisibleItems = menuSections.some(section =>
@@ -157,6 +167,7 @@ export default function MenuPage() {
 
   const handleAdd = dish => {
     setPlate(prev => ({ ...prev, [dish.id]: (prev[dish.id] || 0) + 1 }));
+    showToast(`${dish.name} added to plate!`);
   };
 
   const handleRemove = id => {
@@ -184,6 +195,14 @@ export default function MenuPage() {
 
   return (
     <div className="menu-page">
+
+      {/* ── Toast Notification ── */}
+      {toast && (
+        <div className="menu-toast">
+          <Check size={16} />
+          {toast}
+        </div>
+      )}
 
       {/* ── Hero ── */}
       <div className="menu-hero">
@@ -215,7 +234,7 @@ export default function MenuPage() {
               value={selectedLocation}
               onChange={e => setSelectedLocation(e.target.value)}
             >
-              <option value="">📍 Service Location</option>
+              <option value=""> Service Location</option>
               {cities.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
             </select>
 
@@ -224,7 +243,7 @@ export default function MenuPage() {
               value={selectedOccasion}
               onChange={e => setSelectedOccasion(e.target.value)}
             >
-              <option value="">🎉 Your Occasion</option>
+              <option value=""> Your Occasion</option>
               {navOccasions.map(o => <option key={o} value={o}>{o}</option>)}
             </select>
 
@@ -234,7 +253,7 @@ export default function MenuPage() {
               onChange={e => setSelectedPeople(e.target.value)}
             >
               <option value="">👥 No. of People</option>
-              {Array.from({ length: 500 }, (_, i) => i + 1).map(n => (
+              {Array.from({ length: 50 }, (_, i) => i + 1).map(n => (
                 <option key={n} value={n}>{n} {n === 1 ? 'Person' : 'People'}</option>
               ))}
             </select>
@@ -260,15 +279,25 @@ export default function MenuPage() {
 
         {/* Category Tabs */}
         <div className="menu-filters__tabs">
-          {menuFilterCategories.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`menu-tab${activeCategory === cat.id ? ' menu-tab--active' : ''}`}
-            >
-              {cat.label}
-            </button>
-          ))}
+          <div className="menu-filters__tabs-left">
+            {menuFilterCategories.map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`menu-tab${activeCategory === cat.id ? ' menu-tab--active' : ''}`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+          <button 
+            className={`menu-cart-btn ${totalItems > 0 ? 'menu-cart-btn--active' : ''}`}
+            onClick={() => setIsPlateOpen(true)}
+          >
+            <ShoppingBag size={18} />
+            <span>My Plate</span>
+            {totalItems > 0 && <span className="menu-cart-btn__badge">{totalItems}</span>}
+          </button>
         </div>
       </div>
 
@@ -293,15 +322,6 @@ export default function MenuPage() {
           )}
         </div>
       </div>
-
-      {/* ── My Plate Floating Button ── */}
-      {totalItems > 0 && (
-        <button className="my-plate-btn" onClick={() => setIsPlateOpen(true)}>
-          <ShoppingBag size={20} />
-          <span>My Plate</span>
-          <span className="my-plate-btn__badge">{totalItems}</span>
-        </button>
-      )}
 
       {/* ── My Plate Drawer ── */}
       {isPlateOpen && (
@@ -358,13 +378,13 @@ export default function MenuPage() {
             </div>
 
             <div className="plate-drawer__footer">
-              <a
-                href="tel:+918926262674"
+              <button
                 className="btn-red"
                 style={{ width: '100%', justifyContent: 'center' }}
+                onClick={() => navigate('/view-menu-cart', { state: { plate } })}
               >
                 📞 Send Enquiry
-              </a>
+              </button>
               <button
                 className="plate-drawer__clear"
                 onClick={() => setPlate({})}

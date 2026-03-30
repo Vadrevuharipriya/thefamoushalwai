@@ -115,7 +115,9 @@
 // ─── Story ─────────────────────────────────────────────────────────────────────
 .ab-story {
   background: $cream;
-  padding: 5rem 1rem;
+  padding: 3.5rem 1rem;
+
+  @include md { padding: 5rem 1rem; }
 
   &__inner {
     max-width: 1280px;
@@ -204,7 +206,9 @@
 // ─── Values ────────────────────────────────────────────────────────────────────
 .ab-values {
   background: $white;
-  padding: 5rem 1rem;
+  padding: 3.5rem 1rem;
+
+  @include md { padding: 5rem 1rem; }
 
   &__grid {
     display: grid;
@@ -255,7 +259,9 @@
 // ─── Team ──────────────────────────────────────────────────────────────────────
 .ab-team {
   background: $dark;
-  padding: 5rem 1rem;
+  padding: 3.5rem 1rem;
+
+  @include md { padding: 5rem 1rem; }
 
   &__inner {
     max-width: 1280px;
@@ -265,12 +271,80 @@
   }
 
   &__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+    display: flex;
+    transition: transform 0.4s ease;
+  }
 
-    @include sm { grid-template-columns: repeat(2, 1fr); }
-    @include lg { grid-template-columns: repeat(3, 1fr); }
+  .ab-pro-card {
+    flex: 0 0 calc(100% / 1);
+    @media (min-width: 640px) { flex: 0 0 calc(100% / 2); }
+    @media (min-width: 768px) { flex: 0 0 calc(100% / 3); }
+    @media (min-width: 1024px) { flex: 0 0 calc(100% / 4); }
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  &__carousel {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+  }
+
+  &__grid-wrapper {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &__nav {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: $white;
+    @include flex-center;
+    transition: $transition-base;
+    cursor: pointer;
+    z-index: 10;
+
+    &:hover:not(:disabled) {
+      background: $brand-red;
+      border-color: $brand-red;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+
+  &__dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    cursor: pointer;
+    transition: $transition-base;
+
+    &--active {
+      background: $brand-red;
+      transform: scale(1.2);
+    }
+
+    &:hover:not(&--active) {
+      background: rgba(255,255,255,0.4);
+    }
   }
 }
 
@@ -287,9 +361,9 @@
   }
 
   &__img-wrap {
-    height: 220px;
+    height: 180px;
     overflow: hidden;
-    @include lg { height: 260px; }
+    @include lg { height: 250px; }
   }
 
   &__img {
@@ -300,21 +374,21 @@
     .ab-pro-card:hover & { transform: scale(1.06); }
   }
 
-  &__info { padding: 1rem 1.25rem; }
+  &__info { padding: 0.75rem 1rem; }
 
   &__name {
     font-family: $font-heading;
     font-weight: 800;
-    font-size: 1rem;
+    font-size: 0.875rem;
     color: $white;
-    margin: 0 0 0.15rem;
+    margin: 0 0 0.1rem;
   }
 
   &__role {
     font-family: $font-body;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: rgba(255,255,255,0.5);
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.4rem;
   }
 
   &__meta {
@@ -327,7 +401,9 @@
 // ─── Address ───────────────────────────────────────────────────────────────────
 .ab-address {
   background: $cream;
-  padding: 5rem 1rem;
+  padding: 3.5rem 1rem;
+
+  @include md { padding: 5rem 1rem; }
 
   &__grid {
     display: grid;

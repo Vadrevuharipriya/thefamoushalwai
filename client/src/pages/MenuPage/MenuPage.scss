@@ -19,9 +19,13 @@
 
   &__collage {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     height: 100%;
     gap: 0;
+
+    @include sm {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   &__panel {
@@ -258,6 +262,65 @@
   }
 }
 
+// Cart button in tabs
+.menu-filters__tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.menu-filters__tabs-left {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  @include scrollbar-hide;
+  flex: 1;
+}
+
+.menu-cart-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: $radius-full;
+  border: 2px solid $border-color;
+  font-family: $font-body;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #555;
+  background: $white;
+  transition: $transition-fast;
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: $brand-red;
+    color: $brand-red;
+  }
+
+  &--active {
+    background: $brand-red;
+    border-color: $brand-red;
+    color: $white;
+  }
+
+  &__badge {
+    background: $brand-gold;
+    color: $dark;
+    font-size: 0.7rem;
+    font-weight: 900;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 // ─── Content ──────────────────────────────────────────────────────────────────
 .menu-content {
   padding: 2.5rem 0 5rem;
@@ -307,16 +370,16 @@
     color: $brand-gold;
     margin: 0;
     flex: 1;
-  }
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
 
-  &__count {
-    font-family: $font-body;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #aaa;
-    background: $cream-dark;
-    padding: 0.2rem 0.6rem;
-    border-radius: $radius-full;
+    .menu-section__count {
+      font-family: $font-body;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #888;
+    }
   }
 
   &__grid {
@@ -403,46 +466,6 @@
     }
   }
 
-  &__counter {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: $white;
-    border: 1.5px solid $brand-red;
-    border-radius: $radius-full;
-    padding: 2px 5px;
-    box-shadow: $shadow-card;
-
-    span {
-      font-family: $font-heading;
-      font-size: 0.72rem;
-      font-weight: 900;
-      color: $brand-red;
-      min-width: 14px;
-      text-align: center;
-    }
-  }
-
-  &__counter-btn {
-    width: 18px;
-    height: 18px;
-    border-radius: $radius-full;
-    background: $brand-red;
-    color: $white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: $transition-fast;
-
-    &:hover {
-      background: $brand-red-dark;
-    }
-  }
-
   &__info {
     padding: 0.5rem 0.6rem 0.6rem;
     display: flex;
@@ -464,6 +487,42 @@
     color: #333;
     line-height: 1.3;
     margin: 0;
+    flex: 1;
+  }
+
+  &__add-btn {
+    position: static;
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: $radius-full;
+    background: $brand-red;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: $shadow-red;
+    transition: $transition-fast;
+    opacity: 1;
+    transform: scale(1);
+    margin-left: auto;
+
+    &:hover {
+      background: $brand-red-dark;
+      transform: scale(1.1) !important;
+    }
+  }
+
+  &__counter {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: $white;
+    border: 1.5px solid $brand-red;
+    border-radius: $radius-full;
+    padding: 2px 5px;
+    box-shadow: $shadow-card;
+    margin-left: auto;
   }
 }
 
@@ -724,5 +783,114 @@
     &:hover {
       background: $brand-red-dark;
     }
+  }
+}
+
+// ─── Toast Notification ─────────────────────────────────────────────────────────
+.menu-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: #22c55e;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-family: $font-body;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+  animation: toastSlideIn 0.3s ease-out;
+  white-space: nowrap;
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+// ─── Sticky Cart Icon ────────────────────────────────────────────────────────────
+.menu-cart-icon-wrapper {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 45;
+}
+
+.menu-cart-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    background: #fee2e2;
+    border-color: $brand-red;
+    color: $brand-red;
+  }
+
+  &--active {
+    background: $brand-red;
+    border-color: $brand-red;
+    color: white;
+    box-shadow: 0 4px 15px rgba($brand-red, 0.4);
+    animation: pulse 2s infinite;
+
+    &:hover {
+      background: $brand-red-dark;
+      transform: scale(1.05);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #fbbf24;
+    color: #92400e;
+    font-family: $font-heading;
+    font-weight: 900;
+    font-size: 0.7rem;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba($brand-red, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba($brand-red, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba($brand-red, 0);
   }
 }

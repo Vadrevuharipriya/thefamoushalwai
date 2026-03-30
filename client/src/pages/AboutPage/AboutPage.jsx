@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { ChevronRight, Phone, MessageCircle, Star, Users, Award, MapPin, CheckCircle } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Phone, MessageCircle, Star, Users, Award, MapPin, CheckCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { professionals, stats } from '../../data/homeData';
 import './AboutPage.scss';
 
@@ -160,6 +161,28 @@ function ValuesSection() {
 
 // ─── Team ─────────────────────────────────────────────────────────────────────
 function TeamSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsPerView, setItemsPerView] = useState(4);
+
+  useEffect(() => {
+    const updateItemsPerView = () => {
+      if (window.innerWidth >= 1024) setItemsPerView(4);
+      else if (window.innerWidth >= 768) setItemsPerView(3);
+      else if (window.innerWidth >= 640) setItemsPerView(2);
+      else setItemsPerView(1);
+    };
+    updateItemsPerView();
+    window.addEventListener('resize', updateItemsPerView);
+    return () => window.removeEventListener('resize', updateItemsPerView);
+  }, []);
+
+  const maxIndex = Math.max(0, professionals.length - itemsPerView);
+  const canGoPrev = currentIndex > 0;
+  const canGoNext = currentIndex < maxIndex;
+
+  const goPrev = () => setCurrentIndex((prev) => Math.max(0, prev - 1));
+  const goNext = () => setCurrentIndex((prev) => Math.min(maxIndex, prev + 1));
+
   return (
     <section className="ab-team">
       <div className="ab-team__inner">
@@ -174,29 +197,66 @@ function TeamSection() {
             Background-verified professionals with hundreds of successful events under their belt.
           </p>
         </div>
-        <div className="ab-team__grid">
-          {professionals.map((pro) => (
-            <div key={pro.id} className="ab-pro-card">
-              <div className="ab-pro-card__img-wrap">
-                <img
-                  src={pro.image}
-                  alt={pro.name}
-                  className="ab-pro-card__img"
-                  onError={(e) => { e.target.src = `https://i.pravatar.cc/300?u=${pro.id}-pro`; }}
-                />
-              </div>
-              <div className="ab-pro-card__info">
-                <p className="ab-pro-card__name">{pro.name}</p>
-                <p className="ab-pro-card__role">{pro.role}</p>
-                <div className="ab-pro-card__meta">
-                  <span className="flex items-center gap-1">
-                    <Star size={12} fill="#DA9100" color="#DA9100" />
-                    <span className="font-body text-xs font-bold text-white">{pro.rating}</span>
-                  </span>
-                  <span className="font-body text-xs text-white/50">{pro.events}+ events</span>
+
+        <div className="ab-team__carousel">
+          <button
+            className="ab-team__nav ab-team__nav--prev"
+            onClick={goPrev}
+            disabled={!canGoPrev}
+            aria-label="Previous"
+          >
+            <ChevronLeft size={20} />
+          </button>
+
+          <div className="ab-team__grid-wrapper">
+            <div
+              className="ab-team__grid"
+              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
+            >
+              {professionals.map((pro) => (
+                <div key={pro.id} className="ab-pro-card">
+                  <div className="ab-pro-card__img-wrap">
+                    <img
+                      src={pro.image}
+                      alt={pro.name}
+                      className="ab-pro-card__img"
+                      onError={(e) => { e.target.src = `https://i.pravatar.cc/300?u=${pro.id}-pro`; }}
+                    />
+                  </div>
+                  <div className="ab-pro-card__info">
+                    <p className="ab-pro-card__name">{pro.name}</p>
+                    <p className="ab-pro-card__role">{pro.role}</p>
+                    <div className="ab-pro-card__meta">
+                      <span className="flex items-center gap-1">
+                        <Star size={12} fill="#DA9100" color="#DA9100" />
+                        <span className="font-body text-xs font-bold text-white">{pro.rating}</span>
+                      </span>
+                      <span className="font-body text-xs text-white/50">{pro.events}+ events</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
+          </div>
+
+          <button
+            className="ab-team__nav ab-team__nav--next"
+            onClick={goNext}
+            disabled={!canGoNext}
+            aria-label="Next"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+
+        <div className="ab-team__dots">
+          {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+            <button
+              key={i}
+              className={`ab-team__dot ${i === currentIndex ? 'ab-team__dot--active' : ''}`}
+              onClick={() => setCurrentIndex(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
           ))}
         </div>
       </div>
@@ -206,47 +266,36 @@ function TeamSection() {
 
 // ─── Address ──────────────────────────────────────────────────────────────────
 function AddressSection() {
-  return (
-    <section className="ab-address">
-      <div className="ab-section-inner">
-        <div className="ab-address__grid">
-          <div className="ab-address__info">
-            <div className="section-tag">📍 Find Us</div>
-            <h2 className="font-heading font-black text-3xl text-dark mt-2 mb-4">
-              Our Head Office
-            </h2>
-            <div className="ab-address__detail">
-              <MapPin size={18} className="text-brand-red flex-shrink-0 mt-1" />
-              <div>
-                <p className="font-heading font-bold text-dark text-sm">Head Office</p>
-                <p className="font-body text-gray-500 text-sm leading-relaxed">
-                  B-191, Kushak No. 2, Kadhi Pur,<br />
-                  Near Saint Sujan Singh Gurudwara,<br />
-                  Delhi — 110036
-                </p>
-              </div>
-            </div>
-            <div className="ab-address__detail mt-4">
-              <Phone size={18} className="text-brand-red flex-shrink-0" />
-              <div>
-                <a href="tel:+918926262674" className="font-body text-sm text-gray-700 hover:text-brand-red transition-colors block">+91-8926262674</a>
-                <a href="tel:+918926262675" className="font-body text-sm text-gray-700 hover:text-brand-red transition-colors block">+91-8926262675</a>
-              </div>
-            </div>
-          </div>
-          <div className="ab-address__map">
-            <iframe
-              title="The Famous Halwai Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3499.5!2d77.09!3d28.69!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDQxJzI0LjAiTiA3N8KwMDUnMjQuMCJF!5e0!3m2!1sen!2sin!4v1"
-              allowFullScreen=""
-              loading="lazy"
-              className="ab-address__iframe"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+  // return (
+  //   // <section className="ab-address">
+  //   //   <div className="ab-section-inner">
+  //   //     <div className="ab-address__info">
+  //   //       <div className="section-tag">📍 Find Us</div>
+  //   //       <h2 className="font-heading font-black text-3xl text-dark mt-2 mb-4">
+  //   //         Our Head Office
+  //   //       </h2>
+  //   //       <div className="ab-address__detail">
+  //   //         <MapPin size={18} className="text-brand-red flex-shrink-0 mt-1" />
+  //   //         <div>
+  //   //           <p className="font-heading font-bold text-dark text-sm">Head Office</p>
+  //   //           <p className="font-body text-gray-500 text-sm leading-relaxed">
+  //   //             B-191, Kushak No. 2, Kadhi Pur,<br />
+  //   //             Near Saint Sujan Singh Gurudwara,<br />
+  //   //             Delhi — 110036
+  //   //           </p>
+  //   //         </div>
+  //   //       </div>
+  //   //       <div className="ab-address__detail mt-4">
+  //   //         <Phone size={18} className="text-brand-red flex-shrink-0" />
+  //   //         <div>
+  //   //           <a href="tel:+918926262674" className="font-body text-sm text-gray-700 hover:text-brand-red transition-colors block">+91-8926262674</a>
+  //   //           <a href="tel:+918926262675" className="font-body text-sm text-gray-700 hover:text-brand-red transition-colors block">+91-8926262675</a>
+  //   //         </div>
+  //   //       </div>
+  //   //     </div>
+  //   //   </div>
+  //   // </section>
+  // );
 }
 
 // ─── CTA ──────────────────────────────────────────────────────────────────────
@@ -287,3 +336,5 @@ export default function AboutPage() {
     </div>
   );
 }
+
+

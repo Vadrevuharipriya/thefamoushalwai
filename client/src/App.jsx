@@ -1,37 +1,53 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
-import HomePage from './pages/HomePage/HomePage';
-import OccasionPage from './pages/OccasionPage/OccasionPage';
-import MenuPage from './pages/MenuPage/MenuPage';
-import AboutPage from './pages/AboutPage/AboutPage';
+import AppRoutes from './routes';
 import './App.scss';
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      // Give the page a moment to render before scrolling to the element
+      const timer = setTimeout(() => {
+        const el = document.querySelector(hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+      return () => clearTimeout(timer);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
   return null;
+}
+
+function AppContent() {
+  const { pathname } = useLocation();
+  const hidePartnerCTA = ['/about', '/partner', '/enquiry', '/professionals'].some(
+    p => pathname === p || pathname.startsWith(p + '/')
+  );
+
+  return (
+    <div className="app-layout">
+      <Navbar />
+      <div className="app-layout__content">
+        <AppRoutes />
+      </div>
+      <Footer showPartnerCTA={!hidePartnerCTA} />
+      <WhatsAppButton />
+    </div>
+  );
 }
 
 function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="app-layout">
-        <Navbar />
-        <div className="app-layout__content">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/our-menu" element={<MenuPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/services/:occasion" element={<OccasionPage />} />
-          </Routes>
-        </div>
-        <Footer />
-        <WhatsAppButton />
-      </div>
+      <AppContent />
     </BrowserRouter>
   );
 }

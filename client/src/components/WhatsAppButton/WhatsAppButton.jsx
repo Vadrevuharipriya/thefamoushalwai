@@ -3,7 +3,7 @@ import './WhatsAppButton.scss';
 export default function WhatsAppButton() {
   return (
     <a
-      href="https://wa.me/918926262674"
+      href="https://api.whatsapp.com/send?phone=918926262675&text=Hello!%20I%20am%20looking%20a%20Halwai%20%26%20Chefs?"
       target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-btn"

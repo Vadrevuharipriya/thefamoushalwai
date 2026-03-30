@@ -2,8 +2,10 @@
 @use '../../styles/mixins' as *;
 
 .cuisines-section {
-  padding: 5rem 1rem;
+  padding: 3.5rem 1rem;
   background-color: $white;
+
+  @include md { padding: 5rem 1rem; }
 
   &__grid {
     display: grid;

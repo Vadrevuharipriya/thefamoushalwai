@@ -3,7 +3,9 @@
 
 .google-reviews {
   background: #EBEBEB;
-  padding: 4rem 1.25rem 4rem;
+  padding: 3rem 1rem;
+
+  @include md { padding: 4rem 1.25rem; }
 
   // ── Top heading ─────────────────────────────────────────────────────────────
   &__top {

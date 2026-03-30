@@ -2,10 +2,12 @@
 @use '../../styles/mixins' as *;
 
 .how-section {
-  padding: 5rem 1rem;
+  padding: 3.5rem 1rem;
   background-color: $cream;
   position: relative;
   overflow: hidden;
+
+  @include md { padding: 5rem 1rem; }
 
   // Dot-grid background pattern (replaces inline style)
   &__bg-pattern {

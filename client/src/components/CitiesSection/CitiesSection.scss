@@ -2,10 +2,12 @@
 @use '../../styles/mixins' as *;
 
 .cities-section {
-  padding: 5rem 0;
+  padding: 3.5rem 0;
   background-color: $dark;
   position: relative;
   overflow: hidden;
+
+  @include md { padding: 5rem 0; }
 
   // Replaces bg-[radial-gradient(...)] arbitrary Tailwind class
   &__glow {
@@ -19,7 +21,39 @@
     gap: 0.75rem;
     overflow-x: auto;
     padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
     @include scrollbar-hide;
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  &__nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: $radius-full;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.06);
+    color: $white;
+    cursor: pointer;
+    transition: $transition-base;
+    flex-shrink: 0;
+
+    &:hover {
+      background: $brand-red;
+      border-color: $brand-red;
+    }
+
+    &:active {
+      transform: scale(0.93);
+    }
   }
 }
 

@@ -1,0 +1,451 @@
+// View Menu Cart Page Styles
+
+$brand-red: #c12727;
+$brand-red-dark: #a01f1f;
+$white: #ffffff;
+$gray-100: #f5f5f5;
+$gray-200: #e5e5e5;
+$gray-500: #6b7280;
+$gray-700: #374151;
+$gray-900: #111827;
+
+.vmc-page {
+  min-height: 100vh;
+  background: $gray-100;
+  padding: 5rem 1rem 1rem;
+}
+
+.vmc-header {
+  max-width: 1000px;
+  margin: 0 auto 1.5rem;
+  
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $gray-700;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: $brand-red;
+    }
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: $gray-900;
+    margin: 0;
+  }
+  
+  p {
+    color: $gray-500;
+    font-size: 0.875rem;
+    margin: 0.25rem 0 0;
+  }
+}
+
+.vmc-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+  @media (min-width: 900px) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.vmc-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.vmc-list {
+  background: $white;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  flex: 1;
+  
+  &__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $gray-900;
+    margin: 0 0 1rem;
+  }
+}
+
+.vmc-empty {
+  text-align: center;
+  padding: 2rem;
+  color: $gray-500;
+  
+  &__icon {
+    // color: $gray-300;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    margin-bottom: 1rem;
+  }
+  
+  &__btn {
+    display: inline-block;
+    background: $brand-red;
+    color: $white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background 0.2s;
+    
+    &:hover {
+      background: $brand-red-dark;
+    }
+  }
+}
+
+.vmc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid $gray-200;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &__info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  &__veg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  
+  &__name {
+    font-weight: 600;
+    color: $gray-900;
+    font-size: 0.875rem;
+  }
+  
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    button {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: $gray-100;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+      
+      &:hover {
+        background: $gray-200;
+      }
+    }
+    
+    span {
+      min-width: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+  }
+  
+  &__remove {
+    background: none;
+    border: none;
+    color: $gray-500;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: $brand-red;
+    }
+  }
+}
+
+.vmc-form {
+  background: $white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  flex: 1;
+  max-width: 100%;
+  
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 1rem;
+    color: $gray-900;
+  }
+  
+  &__section {
+    margin-bottom: 1.25rem;
+    
+    &-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: $gray-900;
+      margin: 0 0 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid $gray-200;
+    }
+  }
+  
+  &__group {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    
+    @media (min-width: 500px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  &__date-input {
+    position: relative;
+    width: 100%;
+    
+    &-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $gray-500;
+    }
+    
+    input {
+      padding-left: 36px;
+    }
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid $gray-200;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: border-color 0.2s;
+    
+    &:focus {
+      outline: none;
+      border-color: $brand-red;
+    }
+  }
+  
+  textarea {
+    margin-bottom: 0.75rem;
+    resize: vertical;
+  }
+  
+  &__amount {
+    background: linear-gradient(135deg, $brand-red, $brand-red-dark);
+    color: $white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    
+    span {
+      font-size: 1rem;
+      
+      strong {
+        font-size: 1.25rem;
+      }
+    }
+  }
+  
+  &__submit {
+    width: 100%;
+    background: $brand-red;
+    color: $white;
+    border: none;
+    padding: 0.875rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    
+    &:hover {
+      background: $brand-red-dark;
+    }
+  }
+}
+
+// Order Summary
+.vmc-summary {
+  background: $white;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  width: 100%;
+  
+  @media (min-width: 900px) {
+    width: 320px;
+    flex-shrink: 0;
+  }
+  
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: $gray-900;
+    margin: 0 0 1rem;
+  }
+  
+  &__items {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed $gray-200;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: $gray-700;
+      flex: 1;
+      margin-right: 0.5rem;
+    }
+    
+    &-qty {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: $brand-red;
+      white-space: nowrap;
+    }
+  }
+  
+  &__divider {
+    height: 1px;
+    background: $gray-200;
+    margin: 1rem 0;
+  }
+  
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+    
+    span:first-child {
+      font-size: 0.875rem;
+      color: $gray-500;
+    }
+    
+    span:last-child {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: $gray-900;
+    }
+  }
+  
+  &__note {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: $gray-100;
+    border-radius: 0.5rem;
+    
+    p {
+      font-size: 0.75rem;
+      color: $gray-500;
+      margin: 0;
+      line-height: 1.4;
+      
+      &:not(:last-child) {
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+}
+
+.vmc-help {
+  max-width: 1000px;
+  margin: 1.5rem auto 0;
+  text-align: center;
+  color: $gray-500;
+  font-size: 0.875rem;
+  
+  p {
+    margin: 0 0 0.5rem;
+  }
+  
+  a {
+    color: $brand-red;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 600;
+  }
+}
+
+.vmc-success {
+  max-width: 500px;
+  margin: 4rem auto;
+  text-align: center;
+  padding: 2rem;
+  
+  &__icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+  }
+  
+  p {
+    color: $gray-500;
+    margin: 0 0 1.5rem;
+  }
+  
+  &__btn {
+    display: inline-block;
+    background: $brand-red;
+    color: $white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background 0.2s;
+    
+    &:hover {
+      background: $brand-red-dark;
+    }
+  }
+}

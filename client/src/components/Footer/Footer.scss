@@ -78,7 +78,9 @@
   // ---- Bottom bar ----
   &__bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 1.25rem 1rem;
+    padding: 1.25rem 1rem 5rem; // extra bottom padding for floating WhatsApp btn on mobile
+
+    @include sm { padding: 1.25rem 1rem; }
 
     &-inner {
       max-width: 1280px;
@@ -87,10 +89,59 @@
       flex-direction: column;
       align-items: center;
       gap: 0.75rem;
+      text-align: center;
 
       @include sm {
         flex-direction: row;
         justify-content: space-between;
+        text-align: left;
+      }
+    }
+  }
+
+  // ---- Map Section ----
+  &__map {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2rem 1rem;
+
+    &-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      @include md {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 2rem;
+      }
+    }
+
+    &-container {
+      width: 100%;
+      min-height: 200px;
+      border-radius: $radius-xl;
+      overflow: hidden;
+
+      @include md {
+        width: 55%;
+        min-height: 250px;
+      }
+
+      iframe {
+        display: block;
+      }
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      @include md {
+        width: 45%;
+        padding: 1rem 0;
       }
     }
   }

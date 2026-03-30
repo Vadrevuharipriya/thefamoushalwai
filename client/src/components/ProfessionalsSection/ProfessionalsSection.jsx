@@ -1,10 +1,11 @@
 import { Star, Award } from 'lucide-react';
-import { professionals } from '../../data/homeData';
+import { Link } from 'react-router-dom';
+import { professionals } from '../../data/professionalsData';
 import './ProfessionalsSection.scss';
 
 function ProfCard({ pro }) {
   return (
-    <div className="prof-card">
+    <Link to={`/professionals/${pro.slug}`} className="prof-card" style={{ textDecoration: 'none' }}>
       <div className="prof-card__image-wrap">
         <img
           src={pro.image}
@@ -38,7 +39,7 @@ function ProfCard({ pro }) {
           ))}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -59,9 +60,9 @@ export default function ProfessionalsSection() {
               Well Trained &<br /><span className="text-gradient">Background Verified</span>
             </h2>
           </div>
-          <a href="#" className="btn-outline self-start md:self-auto border-white/20 text-white hover:bg-white hover:text-brand-red">
+          <Link to="/professionals" className="btn-outline self-start md:self-auto border-white/20 text-white hover:bg-white hover:text-brand-red">
             View All Professionals
-          </a>
+          </Link>
         </div>
 
         <div className="prof-section__scroll-row">

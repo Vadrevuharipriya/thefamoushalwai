@@ -51,7 +51,7 @@ export default function HeroCarousel() {
 
             {/* Content — same layer as image, fades in sync */}
             <div className="relative z-10 h-full flex items-center pt-16">
-              <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full grid lg:grid-cols-[1fr_auto] gap-12 items-center">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full grid lg:grid-cols-[1fr_auto] gap-8 lg:gap-12 items-center">
 
                 {/* Left: Text */}
                 <div className="max-w-2xl">
@@ -62,12 +62,12 @@ export default function HeroCarousel() {
                   </div>
 
                   {/* Headline */}
-                  <h1 className="font-heading font-black text-white leading-[1.05] mb-5">
-                    <span className="block text-5xl md:text-6xl lg:text-7xl">{slide.title}</span>
-                    <span className="block text-5xl md:text-6xl lg:text-7xl text-gradient">{slide.titleAccent}</span>
+                  <h1 className="font-heading font-black text-white leading-[1.05] mb-4 md:mb-5">
+                    <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl">{slide.title}</span>
+                    <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gradient">{slide.titleAccent}</span>
                   </h1>
 
-                  <p className="text-white/75 font-body text-lg leading-relaxed mb-8 max-w-lg">
+                  <p className="text-white/75 font-body text-base sm:text-lg leading-relaxed mb-6 md:mb-8 max-w-lg">
                     {slide.subtitle}
                   </p>
 
@@ -119,11 +119,11 @@ export default function HeroCarousel() {
 
       {/* Prev / Next — above slides */}
       <button onClick={prev} aria-label="Previous"
-        className="hero-carousel__nav-btn absolute left-4 top-1/2 -translate-y-1/5 z-10">
+        className="hero-carousel__nav-btn absolute left-3 sm:left-4 top-1/2 -translate-y-1/4 z-10">
         <ChevronLeft size={20} />
       </button>
       <button onClick={next} aria-label="Next"
-        className="hero-carousel__nav-btn absolute right-4 top-1/2 -translate-y-1/5 z-10">
+        className="hero-carousel__nav-btn absolute right-3 sm:right-4 top-1/2 -translate-y-1/4 z-10">
         <ChevronRight size={20} />
       </button>
 

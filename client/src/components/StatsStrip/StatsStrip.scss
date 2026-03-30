@@ -38,9 +38,11 @@
   &__title {
     font-family: $font-heading;
     font-weight: 800;
-    font-size: 1.75rem;
+    font-size: 1.4rem;
     color: $white;
     line-height: 1.2;
+
+    @include sm { font-size: 1.75rem; }
 
     @include md {
       font-size: 2rem;

@@ -2,10 +2,12 @@
 @use '../../styles/mixins' as *;
 
 .prof-section {
-  padding: 5rem 1rem;
+  padding: 3.5rem 1rem;
   background-color: $dark;
   position: relative;
   overflow: hidden;
+
+  @include md { padding: 5rem 1rem; }
 
   &__glow-left {
     @include absolute-fill;

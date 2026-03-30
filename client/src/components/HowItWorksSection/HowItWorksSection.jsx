@@ -70,7 +70,7 @@ export default function HowItWorksSection() {
                 <p className="font-body text-gray-400 text-sm mb-6">Talk to our team directly and book in minutes</p>
                 <a
                   href="tel:+918926262674"
-                  className="inline-flex items-center gap-2 bg-brand-red text-white px-8 py-4 rounded-2xl font-heading font-black text-xl shadow-red hover:shadow-[0_8px_32px_rgba(193,39,45,0.5)] hover:scale-105 transition-all duration-200"
+                  className="inline-flex items-center gap-2 bg-brand-red text-white px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-heading font-black text-lg sm:text-xl shadow-red hover:shadow-[0_8px_32px_rgba(193,39,45,0.5)] hover:scale-105 transition-all duration-200"
                 >
                   +91-89262 62674
                 </a>

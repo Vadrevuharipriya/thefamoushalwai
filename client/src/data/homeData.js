@@ -1,8 +1,3 @@
-const chefImages = import.meta.glob('../assets/chefs/*.{jpg,jpeg,png}', {
-  eager: true,
-  import: 'default'
-})
-
 const cuisineImages = import.meta.glob('../assets/cuisine/*.{jpg,jpeg,png}', {
   eager: true,
   import: 'default'
@@ -88,62 +83,7 @@ export const occasions = [
   { id: 18, name: 'Other Occasion', price: '₹199', image: occasionImages['../assets/occasions/other_occasion.jpg'], link: '#' },
 ];
 
-export const professionals = [
-  {
-    id: 1,
-    name: 'Om Prakash',
-    role: 'Master Halwai',
-    rating: 4.3,
-    events: 120,
-    image: chefImages['../assets/chefs/om_prakash.jpg'],
-    link: '#'
-  },
-  {
-    id: 2,
-    name: 'Pankaj Kumar',
-    role: 'Executive Chef',
-    rating: 5.0,
-    events: 250,
-    image: chefImages['../assets/chefs/pankaj_kumar.jpg'],
-    link: '#'
-  },
-  {
-    id: 3,
-    name: 'Pankaj Garola',
-    role: 'Senior Chef',
-    rating: 4.9,
-    events: 180,
-    image: chefImages['../assets/chefs/pankaj_garola.jpg'],
-    link: '#'
-  },
-  {
-    id: 4,
-    name: 'Shanker Kothiyal',
-    role: 'Halwai Expert',
-    rating: 5.0,
-    events: 310,
-    image: chefImages['../assets/chefs/shanker_kothiyal.jpg'],
-    link: '#'
-  },
-  {
-    id: 5,
-    name: 'Subhash',
-    role: 'Catering Head',
-    rating: 4.7,
-    events: 95,
-    image: chefImages['../assets/chefs/subhash.jpeg'],
-    link: '#'
-  },
-  {
-    id: 6,
-    name: 'Ram Krishnan',
-    role: 'Pastry Chef',
-    rating: 4.8,
-    events: 140,
-    image: chefImages['../assets/chefs/ram_krishnan.jpeg'],
-    link: '#'
-  },
-]
+export { professionals } from './professionalsData';
 
 export const cuisines = [
   { id: 1, name: 'South Indian', image: cuisineImages['../assets/cuisine/south_indian.jpg'] },
@@ -221,17 +161,19 @@ export const testimonials = [
   },
 ];
 
+const PX = '?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop';
+
 export const cities = [
-  { id: 1, name: 'Delhi NCR', image: 'https://images.pexels.com/photos/789750/pexels-photo-789750.jpeg', link: '#' },
-  { id: 2, name: 'Dehradun', image: 'https://images.pexels.com/photos/3408353/pexels-photo-3408353.jpeg', link: '#' },
-  { id: 3, name: 'Haridwar', image: 'https://images.pexels.com/photos/2846217/pexels-photo-2846217.jpeg', link: '#' },
-  { id: 4, name: 'Lucknow', image: 'https://images.pexels.com/photos/17223838/pexels-photo-17223838.jpeg', link: '#' },
-  { id: 5, name: 'Jaipur', image: 'https://images.pexels.com/photos/3581369/pexels-photo-3581369.jpeg', link: '#' },
-  { id: 6, name: 'Noida', image: 'https://images.pexels.com/photos/1105766/pexels-photo-1105766.jpeg', link: '#' },
-  { id: 7, name: 'Gurugram', image: 'https://images.pexels.com/photos/4614200/pexels-photo-4614200.jpeg', link: '#' },
-  { id: 8, name: 'Chandigarh', image: 'https://images.pexels.com/photos/2087391/pexels-photo-2087391.jpeg', link: '#' },
-  { id: 9, name: 'Agra', image: 'https://images.pexels.com/photos/1603650/pexels-photo-1603650.jpeg', link: '#' },
-  { id: 10, name: 'Kolkata', image: 'https://images.pexels.com/photos/1538177/pexels-photo-1538177.jpeg', link: '#' },
+  { id: 1,  name: 'Delhi NCR',   image: `https://images.pexels.com/photos/789750/pexels-photo-789750.jpeg${PX}`,    link: '/city/delhi-ncr' },
+  { id: 2,  name: 'Dehradun',    image: `https://images.pexels.com/photos/3408353/pexels-photo-3408353.jpeg${PX}`,  link: '/city/dehradun' },
+  { id: 3,  name: 'Haridwar',    image: `https://images.pexels.com/photos/2846217/pexels-photo-2846217.jpeg${PX}`,  link: '/city/haridwar' },
+  { id: 4,  name: 'Lucknow',     image: `https://images.pexels.com/photos/17223838/pexels-photo-17223838.jpeg${PX}`,link: '/city/lucknow' },
+  { id: 5,  name: 'Jaipur',      image: `https://images.pexels.com/photos/3581369/pexels-photo-3581369.jpeg${PX}`,  link: '/city/jaipur' },
+  { id: 6,  name: 'Noida',       image: `https://images.pexels.com/photos/1105766/pexels-photo-1105766.jpeg${PX}`,  link: '/city/noida' },
+  { id: 7,  name: 'Gurugram',    image: `https://images.pexels.com/photos/4614200/pexels-photo-4614200.jpeg${PX}`,  link: '/city/gurugram' },
+  { id: 8,  name: 'Chandigarh',  image: `https://images.pexels.com/photos/2087391/pexels-photo-2087391.jpeg${PX}`,  link: '/city/chandigarh' },
+  { id: 9,  name: 'Agra',        image: `https://images.pexels.com/photos/1603650/pexels-photo-1603650.jpeg${PX}`,  link: '/city/agra' },
+  { id: 10, name: 'Kolkata',     image: `https://images.pexels.com/photos/1538177/pexels-photo-1538177.jpeg${PX}`,  link: '/city/kolkata' },
 ];
 
 export const navOccasions = [
