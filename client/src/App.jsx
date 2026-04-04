@@ -38,7 +38,7 @@ function AppContent() {
   "/our-packages",
   "/cloud-kitchen",
   "/bhaji",
-  "/venue",
+  "/venue", "/city",
   "/chutney-services",
   "/pickle-achhar",
   "/tiffin-services",
