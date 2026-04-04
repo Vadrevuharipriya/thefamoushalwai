@@ -90,6 +90,16 @@ function MobileMenu({ onClose }) {
   const [occasionsOpen, setOccasionsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
+  const toggleOccasions = () => {
+    setOccasionsOpen(!occasionsOpen);
+    if (!occasionsOpen) setServicesOpen(false);
+  };
+
+  const toggleServices = () => {
+    setServicesOpen(!servicesOpen);
+    if (!servicesOpen) setOccasionsOpen(false);
+  };
+
   return (
     <div className="mobile-menu lg:hidden bg-white border-t border-border shadow-glass">
       <div className="px-5 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
@@ -97,7 +107,7 @@ function MobileMenu({ onClose }) {
         {/* Occasions accordion */}
         <button
           className="w-full flex items-center justify-between px-2 py-3 text-sm font-semibold text-gray-700 hover:text-brand-red font-body transition-colors"
-          onClick={() => setOccasionsOpen((v) => !v)}
+          onClick={toggleOccasions}
         >
           Occasions
           {occasionsOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
@@ -120,7 +130,7 @@ function MobileMenu({ onClose }) {
         {/* Our Services accordion */}
         <button
           className="w-full flex items-center justify-between px-2 py-3 text-sm font-semibold text-gray-700 hover:text-brand-red font-body transition-colors"
-          onClick={() => setServicesOpen((v) => !v)}
+          onClick={toggleServices}
         >
           Our Services
           {servicesOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
