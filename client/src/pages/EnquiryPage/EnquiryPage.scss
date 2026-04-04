@@ -517,3 +517,79 @@
     color: #555;
   }
 }
+/* ─── Mobile Improvements ───────────────────────────────────────────── */
+
+/* 1. Fix toggle buttons (wrap instead of scroll on mobile) */
+@media (max-width: 768px) {
+  .eq-toggle-group {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .eq-toggle-btn {
+    flex: 1 1 calc(50% - 0.5rem);
+    text-align: center;
+  }
+}
+
+/* 2. Disable sticky aside on mobile */
+@media (max-width: 1024px) {
+  .eq-aside {
+    position: static;
+    top: unset;
+  }
+}
+
+/* 3. Full-width submit button on mobile */
+@media (max-width: 600px) {
+  .eq-form__submit {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
+/* 4. Improve form spacing on small screens */
+@media (max-width: 600px) {
+  .eq-form-card {
+    border-radius: 16px;
+  }
+
+  .eq-form__row {
+    gap: 1rem;
+  }
+
+  .eq-form__group {
+    margin-bottom: 1rem;
+  }
+}
+
+/* 5. Hero text alignment + spacing */
+@media (max-width: 768px) {
+  .eq-hero {
+    align-items: center;
+    padding-bottom: 2rem;
+    text-align: center;
+  }
+
+  .eq-hero__breadcrumb {
+    justify-content: center;
+  }
+
+  .eq-hero__sub {
+    margin: 0 auto;
+  }
+}
+
+/* 6. Trust bar better spacing */
+@media (max-width: 480px) {
+  .eq-trust-bar__item {
+    padding: 0.85rem;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .eq-trust-bar__label {
+    font-size: 0.75rem;
+  }
+}
