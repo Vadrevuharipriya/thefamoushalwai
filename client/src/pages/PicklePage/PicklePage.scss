@@ -7,6 +7,43 @@
   padding-top: 4rem;
 }
 
+// ─── Toast Notification ─────────────────────────────────────────────────────────
+.pk-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: #22c55e;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-family: $font-body;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+  animation: toastSlideIn 0.3s ease-out;
+  white-space: nowrap;
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 .pk-hero {
   position: relative;
@@ -146,24 +183,36 @@
 .pk-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 0.75rem;
 
-  @include sm { grid-template-columns: repeat(3, 1fr); }
-  @include md { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
-  @include lg { grid-template-columns: repeat(5, 1fr); }
-  @include xl { grid-template-columns: repeat(6, 1fr); }
+  @include sm {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include md {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
 }
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 .pk-product {
   background: $white;
   border-radius: $radius-xl;
-  border: 1.5px solid $border-color;
   overflow: hidden;
+  box-shadow: $shadow-card;
   cursor: pointer;
   transition: $transition-medium;
   user-select: none;
   outline: none;
+  border: 1.5px solid transparent;
 
   &:hover {
     box-shadow: $shadow-card-hover;
@@ -199,28 +248,79 @@
 
   &:hover &__img { transform: scale(1.06); }
 
-  &__check {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.7);
-    background: rgba(255,255,255,0.2);
+  &__add-btn {
+    position: static;
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: $radius-full;
+    background: $brand-red;
+    color: $white;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: $transition-base;
+    box-shadow: $shadow-red;
+    transition: $transition-fast;
+    margin-left: auto;
 
-    &--active {
-      background: $brand-red;
-      border-color: $brand-red;
-      color: $white;
+    &:hover {
+      background: $brand-red-dark;
+      transform: scale(1.1);
     }
   }
 
-  &__info { padding: 0.65rem 0.75rem 0.75rem; }
+  &__counter {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: auto;
+    background: $white;
+    border-radius: $radius-full;
+    padding: 2px;
+    border: 1.5px solid $border-color;
+  }
+
+  &__counter-btn {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    background: $brand-red;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: $transition-fast;
+
+    &:hover {
+      background: $brand-red-dark;
+    }
+  }
+
+  &__delete-btn {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    background: transparent;
+    color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: $transition-fast;
+
+    &:hover {
+      color: $brand-red;
+      background: rgba($brand-red, 0.1);
+    }
+  }
+
+  &__info {
+    padding: 0.5rem 0.6rem 0.6rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
 
   &__price {
     font-family: $font-heading;
@@ -232,11 +332,12 @@
 
   &__name {
     font-family: $font-body;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: $dark;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.3;
     margin: 0;
-    line-height: 1.35;
+    flex: 1;
   }
 }
 

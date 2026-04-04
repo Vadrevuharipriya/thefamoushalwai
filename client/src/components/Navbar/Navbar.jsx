@@ -6,29 +6,22 @@ import { slugify } from '../../utils/slugify';
 import tfhLogo from '../../assets/logo/tfh-logo.svg';
 import './Navbar.scss';
 
-const services = {
-  Cater: ['Our Packages', 'Cloud Kitchen', 'Bhaji Box', 'Venue Booking'],
-  Halwai: ['Chef & Halwai', 'Bhaji Box', 'Venue Booking'],
-  "Mom's Magic": ['Chutney Services', 'Pickle / Achhar', 'Tiffin Services'],
-};
+const services = [
+  'Chef or Halwai',
+  'Bhaji Box',
+  'Customize Menu',
+  'Cloud Kitchen',
+  'Homemade Aachar',
+  'Fresh Chutney',
+];
 
 const SERVICE_ITEM_LINKS = {
-  Cater: {
-    'Our Packages': '/our-packages',
-    'Cloud Kitchen': '/cloud-kitchen',
-    'Bhaji Box': '/bhaji',
-    'Venue Booking': '/venue',
-  },
-  Halwai: {
-    'Chef & Halwai': '/enquiry',
-    'Bhaji Box': '/bhaji',
-    'Venue Booking': '/venue',
-  },
-  "Mom's Magic": {
-    'Chutney Services': '/chutney-services',
-    'Pickle / Achhar': '/pickle-achhar',
-    'Tiffin Services': '/tiffin-services',
-  },
+  'Chef or Halwai': '/enquiry',
+  'Bhaji Box': '/bhaji',
+  'Customize Menu': '/our-menu',
+  'Cloud Kitchen': '/cloud-kitchen',
+  'Homemade Aachar': '/pickle-achhar',
+  'Fresh Chutney': '/chutney-services',
 };
 
 function MegaDropdown({ open, onClose }) {
@@ -65,37 +58,30 @@ function ServicesDropdown({ open, onClose }) {
       className="services-dropdown absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-glass border border-border z-50 w-56 py-2 max-h-[80vh] overflow-y-auto"
       onMouseLeave={onClose}
     >
-      {Object.entries(services).map(([group, items]) => (
-        <div key={group} className="mb-2">
-          <p className="px-4 py-1.5 text-xs font-heading font-black text-brand-red uppercase tracking-wider">
-            {group}
-          </p>
-          <div className="flex flex-col">
-            {items.map((item) => {
-              const to = SERVICE_ITEM_LINKS[group]?.[item];
-              return to ? (
-                <Link
-                  key={item}
-                  to={to}
-                  onClick={onClose}
-                  className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-cream hover:text-brand-red transition-colors font-body"
-                >
-                  <ChevronRight size={12} className="text-gray-400 mr-2" />
-                  {item}
-                </Link>
-              ) : (
-                <span
-                  key={item}
-                  className="flex items-center px-4 py-2 text-sm text-gray-400 font-body"
-                >
-                  <ChevronRight size={12} className="text-gray-300 mr-2" />
-                  {item}
-                </span>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+      <div className="flex flex-col">
+        {services.map((item) => {
+          const to = SERVICE_ITEM_LINKS[item];
+          return to ? (
+            <Link
+              key={item}
+              to={to}
+              onClick={onClose}
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-cream hover:text-brand-red transition-colors font-body"
+            >
+              <ChevronRight size={12} className="text-gray-400 mr-2" />
+              {item}
+            </Link>
+          ) : (
+            <span
+              key={item}
+              className="flex items-center px-4 py-2 text-sm text-gray-400 font-body"
+            >
+              <ChevronRight size={12} className="text-gray-300 mr-2" />
+              {item}
+            </span>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -141,37 +127,30 @@ function MobileMenu({ onClose }) {
         </button>
         {servicesOpen && (
           <div className="pl-3 pb-1 space-y-0.5">
-            {Object.entries(services).map(([group, items]) => (
-              <div key={group}>
-                <p className="px-2 pt-2 pb-1 text-xs font-heading font-black text-gray-400 uppercase tracking-widest">{group}</p>
-                {items.map((item) => {
-                  const to = SERVICE_ITEM_LINKS[group]?.[item];
-                  return to ? (
-                    <Link
-                      key={item}
-                      to={to}
-                      onClick={onClose}
-                      className="block px-3 py-2 text-sm font-body text-gray-600 hover:text-brand-red hover:bg-cream rounded-lg transition-colors"
-                    >
-                      {item}
-                    </Link>
-                  ) : (
-                    <span key={item} className="block px-3 py-2 text-sm font-body text-gray-400">
-                      {item}
-                    </span>
-                  );
-                })}
-              </div>
-            ))}
+            {services.map((item) => {
+              const to = SERVICE_ITEM_LINKS[item];
+              return to ? (
+                <Link
+                  key={item}
+                  to={to}
+                  onClick={onClose}
+                  className="block px-3 py-2 text-sm font-body text-gray-600 hover:text-brand-red hover:bg-cream rounded-lg transition-colors"
+                >
+                  {item}
+                </Link>
+              ) : (
+                <span key={item} className="block px-3 py-2 text-sm font-body text-gray-400">
+                  {item}
+                </span>
+              );
+            })}
           </div>
         )}
 
         {/* Regular links */}
         {[
-          { label: 'Customized Plate', to: '/our-menu' },
-          { label: 'Book Halwai & Chefs', to: '/enquiry' },
           { label: 'Partner with Us', to: '/partner' },
-          { label: 'Testimonials', to: '/testimonials' },
+          { label: 'Book Halwai & Chefs', to: '/enquiry' },
         ].map(({ label, to }) => (
           <Link
             key={label}
@@ -185,11 +164,11 @@ function MobileMenu({ onClose }) {
 
         {/* Phone */}
         <a
-          href="tel:+918926262674"
+          href="tel:+918926262675"
           className="flex items-center gap-2 px-2 py-3 text-sm font-heading font-bold text-gray-700 hover:text-brand-red transition-colors"
         >
           <Phone size={14} className="text-brand-red" />
-          +91-89262 62674
+          +91-89262 62675
         </a>
 
         {/* CTA */}
@@ -235,7 +214,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-0.5">
+          <nav className="hidden lg:flex items-center gap-2">
             <div className="relative" onMouseEnter={() => open('occasion')} onMouseLeave={close}>
               <button
                 className={`flex items-center gap-1.5 px-4 py-2 text-sm font-body font-semibold rounded-xl transition-all duration-200 ${
@@ -261,10 +240,8 @@ export default function Navbar() {
             </div>
 
             {[
-              { label: 'Customized Plate', to: '/our-menu' },
-              { label: 'Book Halwai & Chefs', to: '/enquiry' },
               { label: 'Partner with Us', to: '/partner' },
-              { label: 'Testimonials', to: '/testimonials' },
+              { label: 'Book Halwai & Chefs', to: '/enquiry' },
             ].map(({ label, to }) => (
               <Link
                 key={label}
@@ -279,11 +256,11 @@ export default function Navbar() {
           {/* Right CTAs */}
           <div className="flex items-center gap-3">
             <a
-              href="tel:+918926262674"
+              href="tel:+918926262675"
               className="hidden md:flex items-center gap-1.5 text-sm font-heading font-bold text-gray-700 hover:text-brand-red transition-colors"
             >
               <Phone size={15} className="text-brand-red" />
-              +91-89262 62674
+              +91-89262 62675
             </a>
             <Link
               to="/enquiry"

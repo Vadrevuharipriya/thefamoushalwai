@@ -4,13 +4,13 @@ import { cuisines } from '../../data/homeData';
 import { slugify } from '../../utils/slugify';
 import './CuisinesSection.scss';
 
-function CuisineCard({ cuisine, large = false }) {
+function CuisineCard({ cuisine }) {
   return (
     <Link
       to={`/our-menu?cuisine=${slugify(cuisine.name)}`}
       className="cuisine-card"
     >
-      <div className={`cuisine-card__media ${large ? 'cuisine-card__media--large' : 'cuisine-card__media--normal'}`}>
+      <div className="cuisine-card__media">
         <img
           src={cuisine.image}
           alt={cuisine.name}
@@ -19,13 +19,6 @@ function CuisineCard({ cuisine, large = false }) {
         />
         <div className="cuisine-card__overlay" />
         <div className="cuisine-card__hover-tint" />
-
-        <div className="cuisine-card__footer">
-          <h3 className="cuisine-card__name">{cuisine.name}</h3>
-          <div className="cuisine-card__arrow">
-            <ChevronRight size={11} color="white" />
-          </div>
-        </div>
       </div>
     </Link>
   );
@@ -46,9 +39,10 @@ export default function CuisinesSection() {
         </div>
 
         <div className="cuisines-section__grid">
-          {cuisines.map((cuisine, i) => (
-            <div key={cuisine.id} className={i < 2 ? 'cuisines-section__featured' : ''}>
-              <CuisineCard cuisine={cuisine} large={i < 2} />
+          {cuisines.map((cuisine) => (
+            <div className="cuisine-item">
+              <CuisineCard cuisine={cuisine} />
+              <div className="cuisine-item__name">{cuisine.name}</div>
             </div>
           ))}
         </div>

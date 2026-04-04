@@ -1,4 +1,5 @@
-import { Star, Award } from 'lucide-react';
+import { useRef } from 'react';
+import { Star, Award, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { professionals } from '../../data/professionalsData';
 import './ProfessionalsSection.scss';
@@ -44,31 +45,62 @@ function ProfCard({ pro }) {
 }
 
 export default function ProfessionalsSection() {
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 320;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <section className="prof-section">
       <div className="prof-section__glow-left" />
       <div className="prof-section__glow-right" />
 
       <div className="relative max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-          <div>
-            <div className="section-tag">
-              <Award size={12} />
-              Top Rated Professionals
-            </div>
-            <h2 className="font-heading font-black text-4xl md:text-5xl text-white leading-tight">
-              Well Trained &<br /><span className="text-gradient">Background Verified</span>
-            </h2>
+        <div className="text-center mb-12">
+          <div className="section-tag">
+            <Award size={12} />
+            Top Rated Professionals
           </div>
-          <Link to="/professionals" className="btn-outline self-start md:self-auto border-white/20 text-white hover:bg-white hover:text-brand-red">
-            View All Professionals
-          </Link>
+          <h2 className="font-heading font-black text-4xl md:text-5xl text-white leading-tight">
+            Well Trained &<br /><span className="text-gradient">Background Verified</span>
+          </h2>
         </div>
 
-        <div className="prof-section__scroll-row">
-          {professionals.map((pro) => (
-            <ProfCard key={pro.id} pro={pro} />
-          ))}
+        <div className="prof-section__carousel">
+          <button 
+            className="prof-section__nav-btn prof-section__nav-btn--left"
+            onClick={() => scroll('left')}
+            aria-label="Scroll left"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          
+          <div className="prof-section__scroll-row" ref={scrollRef}>
+            {professionals.map((pro) => (
+              <ProfCard key={pro.id} pro={pro} />
+            ))}
+          </div>
+          
+          <button 
+            className="prof-section__nav-btn prof-section__nav-btn--right"
+            onClick={() => scroll('right')}
+            aria-label="Scroll right"
+          >
+            <ChevronRight size={24} />
+          </button>
+        </div>
+
+        <div className="text-center mt-8">
+          <Link to="/professionals" className="btn-outline inline-block border-white/20 text-white hover:bg-white hover:text-brand-red">
+            View All Professionals
+          </Link>
         </div>
       </div>
     </section>

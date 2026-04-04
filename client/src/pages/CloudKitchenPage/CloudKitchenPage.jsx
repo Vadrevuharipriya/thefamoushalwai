@@ -28,7 +28,6 @@ const CUISINES = [
   'Soups & Beverages', 'Breads, Rice and Raita',
 ];
 
-const GAS_BURNERS = ['1', '2', '3', '4', '5'];
 
 const TRUST_BADGES = [
   { icon: '🍳', label: 'Cloud Kitchen Setup' },
@@ -81,7 +80,7 @@ function CloudKitchenForm() {
 
   const [form, setForm] = useState({
     location: '', requirement: '', name: '', phone: '',
-    email: '', date: '', meals: [], cuisines: [], burners: '',
+    email: '', date: '', meals: [], cuisines: [],
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -193,14 +192,6 @@ function CloudKitchenForm() {
             </button>
           ))}
         </div>
-      </div>
-
-      <div className="ck-form__group ck-form__group--half">
-        <label className="ck-form__label"><span className="ck-form__req">*</span> No. of Gas Burners (in your kitchen)</label>
-        <select className="ck-form__select" value={form.burners} onChange={(e) => set('burners', e.target.value)} required>
-          <option value="">— Select One —</option>
-          {GAS_BURNERS.map((n) => <option key={n} value={n}>{n}</option>)}
-        </select>
       </div>
 
       <div className="ck-form__footer">

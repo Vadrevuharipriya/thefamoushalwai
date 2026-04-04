@@ -12,7 +12,6 @@ export default function HomePage() {
   return (
     <main className="home-page">
       <HeroCarousel />
-      <StatsStrip />
       <OccasionsSection />
       <ProfessionalsSection />
       <CuisinesSection />

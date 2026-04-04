@@ -4,7 +4,7 @@ import { ChevronRight, CheckCircle, Phone, MessageCircle } from 'lucide-react';
 import './EnquiryPage.scss';
 
 const HERO_IMAGE = 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1600';
-const WHATSAPP_URL = 'https://wa.me/918926262674?text=Hello! I am looking for a Halwai %26 Chefs?';
+const WHATSAPP_URL = 'https://wa.me/918926262675?text=Hello! I am looking for a Halwai %26 Chefs?';
 
 const LOCATIONS = [
   'Delhi NCR', 'Dehradun', 'Haridwar', 'Faridabad', 'Rishikesh',
@@ -12,23 +12,7 @@ const LOCATIONS = [
   'Ghaziabad', 'Yamunanagar', 'Chandigarh', 'Saharanpur',
 ];
 
-const REQUIREMENTS = [
-  'Birthday Party', 'Wedding Functions', 'House Party', 'Pooja at Home',
-  'Anniversary', 'Roka Ceremony', 'Mehendi Cocktail', 'Baby Shower',
-  'Kids Party', 'Corporate Event', 'Bachelor Party', 'Other Occasion',
-  'Cocktail and Sangeet', 'Gala Evening', 'High Tea Menu',
-  'No Onion No Garlic', 'Continental Food', 'Royal Lunch',
-];
-
 const MEALS = ['Breakfast', 'Lunch', 'Evening Snacks', 'Dinner'];
-
-const CUISINES = [
-  'South Indian', 'North Indian', 'China to India',
-  'Flame Grilled to Perfection', 'Mithas Dil Se',
-  'Soups & Beverages', 'Breads, Rice and Raita',
-];
-
-const GAS_BURNERS = ['1', '2', '3', '4', '5'];
 
 // ─── Hero ──────────────────────────────────────────────────────────────────────
 function HeroSection() {
@@ -79,14 +63,11 @@ function EnquiryForm({ incomingPlate }) {
 
   const [form, setForm] = useState({
     location: '',
-    requirement: '',
     name: '',
     phone: '',
     email: '',
     date: '',
     meals: [],
-    cuisines: [],
-    burners: '',
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -141,74 +122,19 @@ function EnquiryForm({ incomingPlate }) {
         Please fill out your information below and our Customer Representative will contact you shortly.
       </p>
 
-      {/* Row: Location + Requirement */}
+      {/* Row: Location + Date */}
       <div className="eq-form__row">
         <div className="eq-form__group">
-          <label className="eq-form__label"><span className="eq-form__req">*</span> Services Location</label>
+          <label className="eq-form__label"><span className="eq-form__req">*</span> Select Location</label>
           <select
             className="eq-form__select"
             value={form.location}
             onChange={(e) => set('location', e.target.value)}
             required
           >
-            <option value="">— Service Location * —</option>
+            <option value="">— Select Location * —</option>
             {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
           </select>
-        </div>
-
-        <div className="eq-form__group">
-          <label className="eq-form__label"><span className="eq-form__req">*</span> Select Requirement</label>
-          <select
-            className="eq-form__select"
-            value={form.requirement}
-            onChange={(e) => set('requirement', e.target.value)}
-            required
-          >
-            <option value="">— Select One —</option>
-            {REQUIREMENTS.map((r) => <option key={r} value={r}>{r}</option>)}
-          </select>
-        </div>
-      </div>
-
-      {/* Row: Name + Phone */}
-      <div className="eq-form__row">
-        <div className="eq-form__group">
-          <label className="eq-form__label"><span className="eq-form__req">*</span> Your Name</label>
-          <input
-            type="text"
-            className="eq-form__input"
-            placeholder="Your Name"
-            value={form.name}
-            onChange={(e) => set('name', e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="eq-form__group">
-          <label className="eq-form__label"><span className="eq-form__req">*</span> Mobile Phone No.</label>
-          <input
-            type="tel"
-            className="eq-form__input"
-            placeholder="eg. 98xxxxxx10"
-            value={form.phone}
-            onChange={(e) => set('phone', e.target.value)}
-            required
-          />
-        </div>
-      </div>
-
-      {/* Row: Email + Date */}
-      <div className="eq-form__row">
-        <div className="eq-form__group">
-          <label className="eq-form__label"><span className="eq-form__req">*</span> Email Address</label>
-          <input
-            type="email"
-            className="eq-form__input"
-            placeholder="Email Address"
-            value={form.email}
-            onChange={(e) => set('email', e.target.value)}
-            required
-          />
         </div>
 
         <div className="eq-form__group">
@@ -222,6 +148,46 @@ function EnquiryForm({ incomingPlate }) {
             required
           />
         </div>
+      </div>
+
+      {/* Row: Name + Phone */}
+      <div className="eq-form__row">
+        <div className="eq-form__group">
+          <label className="eq-form__label"><span className="eq-form__req">*</span> Full Name</label>
+          <input
+            type="text"
+            className="eq-form__input"
+            placeholder="Full Name"
+            value={form.name}
+            onChange={(e) => set('name', e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="eq-form__group">
+          <label className="eq-form__label"><span className="eq-form__req">*</span> Mobile Number</label>
+          <input
+            type="tel"
+            className="eq-form__input"
+            placeholder="Mobile Number"
+            value={form.phone}
+            onChange={(e) => set('phone', e.target.value)}
+            required
+          />
+        </div>
+      </div>
+
+      {/* Email */}
+      <div className="eq-form__group">
+        <label className="eq-form__label"><span className="eq-form__req">*</span> Email Address</label>
+        <input
+          type="email"
+          className="eq-form__input"
+          placeholder="Email Address"
+          value={form.email}
+          onChange={(e) => set('email', e.target.value)}
+          required
+        />
       </div>
 
       {/* Meals */}
@@ -241,40 +207,9 @@ function EnquiryForm({ incomingPlate }) {
         </div>
       </div>
 
-      {/* Cuisines */}
-      <div className="eq-form__group">
-        <label className="eq-form__label">Select Cuisines <span className="eq-form__optional">(optional — you can choose multiple)</span></label>
-        <div className="eq-toggle-group eq-toggle-group--wrap">
-          {CUISINES.map((cuisine) => (
-            <button
-              key={cuisine}
-              type="button"
-              className={`eq-toggle-btn ${form.cuisines.includes(cuisine) ? 'eq-toggle-btn--active' : ''}`}
-              onClick={() => toggleArray('cuisines', cuisine)}
-            >
-              {cuisine}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Gas Burners */}
-      <div className="eq-form__group eq-form__group--half">
-        <label className="eq-form__label"><span className="eq-form__req">*</span> No. of Gas Burners (in your kitchen)</label>
-        <select
-          className="eq-form__select"
-          value={form.burners}
-          onChange={(e) => set('burners', e.target.value)}
-          required
-        >
-          <option value="">— Select One —</option>
-          {GAS_BURNERS.map((n) => <option key={n} value={n}>{n}</option>)}
-        </select>
-      </div>
-
       <div className="eq-form__footer">
         <button type="submit" className="eq-form__submit">
-          Process Now
+         Process Now
         </button>
         <p className="eq-form__privacy">
           🔒 Your details are safe with us. We never share your data.
@@ -292,8 +227,8 @@ function ContactAside() {
         <span className="eq-aside__emoji">📞</span>
         <h3 className="eq-aside__title">Prefer to call?</h3>
         <p className="eq-aside__desc">Talk to our team directly and get a personalised quote in minutes.</p>
-        <a href="tel:+918926262674" className="eq-aside__btn eq-aside__btn--red">
-          <Phone size={16} /> +91-89262 62674
+        <a href="tel:+918926262675" className="eq-aside__btn eq-aside__btn--red">
+          <Phone size={16} /> +91-89262 62675
         </a>
         {/* <a href="tel:+918926262675" className="eq-aside__btn eq-aside__btn--outline">
           <Phone size={16} /> +91-89262 62675

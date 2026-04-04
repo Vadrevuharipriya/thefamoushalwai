@@ -27,7 +27,29 @@ function ScrollToTop() {
 
 function AppContent() {
   const { pathname } = useLocation();
-  const hidePartnerCTA = ['/about', '/partner', '/enquiry', '/professionals'].some(
+  const hidePartnerCTA = [
+  
+  "/our-menu",
+  "/about",
+  "/services/:occasion",
+  "/enquiry",
+  "/partner",
+  "/partner/register",
+  "/our-packages",
+  "/cloud-kitchen",
+  "/bhaji",
+  "/venue",
+  "/chutney-services",
+  "/pickle-achhar",
+  "/tiffin-services",
+  "/city/:slug",
+  "/professionals",
+  "/professionals/:slug",
+  "/testimonials",
+  "/view-menu-cart",
+  "/blog",
+  "/blog/:slug"
+].some(
     p => pathname === p || pathname.startsWith(p + '/')
   );
 

@@ -16,43 +16,58 @@
     pointer-events: none;
   }
 
+  &__carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   &__filmstrip {
     display: flex;
     gap: 0.75rem;
     overflow-x: auto;
-    padding-bottom: 1rem;
+    padding: 0.5rem 0;
     scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     @include scrollbar-hide;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &__controls {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-shrink: 0;
+    display: none;
   }
 
   &__nav-btn {
+    position: absolute;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: $radius-full;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(255, 255, 255, 0.06);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: $brand-red;
+    border: none;
     color: $white;
     cursor: pointer;
-    transition: $transition-base;
+    transition: all 0.3s ease;
     flex-shrink: 0;
 
     &:hover {
-      background: $brand-red;
-      border-color: $brand-red;
+      // background-color: darken($brand-red, 10%);
+      transform: scale(1.1);
     }
 
-    &:active {
-      transform: scale(0.93);
+    &--left {
+      left: -1.3rem;
+    }
+
+    &--right {
+      right: -1.3rem;
     }
   }
 }
@@ -110,4 +125,8 @@
   &:hover &__name {
     color: $brand-gold;
   }
+}
+
+.cities-section__view-btn {
+  min-width: 180px;
 }

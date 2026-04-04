@@ -193,8 +193,8 @@ export default function TestimonialsPage() {
   return (
     <div className="testimonials-page">
       <HeroSection />
-      <StatsStrip />
-      <RatingSummary />
+      {/* <StatsStrip /> */}
+      {/* <RatingSummary /> */}
       <TestimonialsGrid />
       <CTASection />
     </div>

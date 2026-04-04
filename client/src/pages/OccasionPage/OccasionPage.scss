@@ -189,8 +189,9 @@
 
 // ─── Overview ──────────────────────────────────────────────────────────────────
 .op-overview {
-  background: $cream;
+  background: #f6f6f6;
   padding: 3.5rem 1rem;
+  color:#f6f6f6;
 
   @include md { padding: 5rem 1rem; }
 
@@ -283,7 +284,7 @@
 
 // ─── Features ──────────────────────────────────────────────────────────────────
 .op-features {
-  background: $white;
+  background: #f6f6f6;
   padding: 3.5rem 1rem;
 
   @include md { padding: 5rem 1rem; }
@@ -336,7 +337,7 @@
 
 // ─── Menu ──────────────────────────────────────────────────────────────────────
 .op-menu {
-  background: $cream;
+  background: #f6f6f6;
   padding: 3.5rem 1rem;
 
   @include md { padding: 5rem 1rem; }
@@ -554,7 +555,7 @@
 
 // ─── Related ────────────────────────────────────────────────────────────────────
 .op-related {
-  background: $cream;
+  background: #ffffff;
   padding: 3.5rem 1rem;
 
   @include md { padding: 5rem 1rem; }

@@ -1,8 +1,8 @@
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, Twitter, ArrowUpRight, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Footer.scss';
 
-import tfhLogo from '../../assets/logo/tfh-logo.svg';
+import tfhLogo from '../../assets/logo/thf-white.svg';
 
 const LOGO = tfhLogo;
 
@@ -29,7 +29,6 @@ const footerLinks = {
     { label: 'Top Professionals', to: '/professionals' },
     { label: 'Testimonials', to: '/testimonials' },
     { label: 'Blog', to: '/blog' },
-    { label: 'Register as Partner', to: '/partner' },
     { label: 'Customized Plate', to: '/our-menu' },
     { label: 'Our Menu', to: '/our-menu' },
     { label: 'Contact Us', to: '/enquiry' },
@@ -45,6 +44,19 @@ const contactItems = [
 const socialIcons = [Facebook, Instagram, Youtube, Twitter];
 
 export default function Footer({ showPartnerCTA = true }) {
+  const { pathname } = useLocation();
+  const showPartnerLink = pathname === '/';
+  
+  const companyLinks = showPartnerLink 
+    ? [...footerLinks.Company, { label: 'Register as Partner', to: '/partner' }]
+    : footerLinks.Company;
+  
+  const linkSections = [
+    { title: 'Occasions', links: footerLinks.Occasions },
+    { title: 'Services', links: footerLinks.Services },
+    { title: 'Company', links: companyLinks },
+  ];
+
   return (
     <footer className="footer">
       {/* Partner CTA */}
@@ -107,7 +119,7 @@ export default function Footer({ showPartnerCTA = true }) {
         </div>
 
         {/* Link columns */}
-        {Object.entries(footerLinks).map(([title, links]) => (
+        {linkSections.map(({ title, links }) => (
           <div key={title}>
             <h4 className="font-heading font-black text-white text-sm uppercase tracking-wider mb-5">{title}</h4>
             <ul className="space-y-2.5">

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Star, Users, MapPin } from 'lucide-react';
 import { heroSlides } from '../../data/homeData';
 import './HeroCarousel.scss';
@@ -14,6 +14,7 @@ const floatingCards = [
 
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
+  const navigate = useNavigate();
 
   const goTo = useCallback((index) => {
     setCurrent(index);
@@ -73,10 +74,10 @@ export default function HeroCarousel() {
 
                   {/* CTAs */}
                   <div className="flex flex-wrap items-center gap-4">
-                    <a href="#" className="btn-red text-base px-8 py-4 shadow-red">
+                    <button onClick={() => navigate('/enquiry')} className="btn-red text-base px-8 py-4 shadow-red">
                       Book Now
                       <ChevronRight size={18} />
-                    </a>
+                    </button>
                     <Link to="/our-menu" className="flex items-center gap-2 text-white/90 hover:text-white font-body text-sm font-semibold underline underline-offset-4 transition-colors">
                       View Our Menu
                     </Link>

@@ -34,29 +34,15 @@
   }
 
   // ── Content row ─────────────────────────────────────────────────────────────
-  &__content {
+  &__carousel {
     max-width: 1280px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-
-    @include lg {
-      flex-direction: row;
-      align-items: flex-start;
-      gap: 2.5rem;
-    }
+    position: relative;
   }
 
-  // ── Left panel ──────────────────────────────────────────────────────────────
+  // ── Left panel (hidden) ─────────────────────────────────────────────────────────────
   &__left {
-    flex-shrink: 0;
-    text-align: center;
-
-    @include lg {
-      width: 220px;
-      text-align: left;
-    }
+    display: none;
   }
 
   &__big-rating {
@@ -104,8 +90,7 @@
 
   // ── Right panel ─────────────────────────────────────────────────────────────
   &__right {
-    flex: 1;
-    min-width: 0;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
@@ -117,6 +102,10 @@
   &__carousel-wrap {
     position: relative;
     padding: 0 24px;
+
+    @media (max-width: 640px) {
+      padding: 0 16px;
+    }
   }
 
   // Viewport — clips the sliding track
@@ -176,6 +165,15 @@
     &:disabled {
       opacity: 0.35;
       cursor: not-allowed;
+    }
+
+    @media (max-width: 640px) {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      
+      &--prev { left: 2px; }
+      &--next { right: 2px; }
     }
   }
 

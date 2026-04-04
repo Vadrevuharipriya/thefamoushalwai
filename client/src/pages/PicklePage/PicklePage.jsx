@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronRight, ShoppingCart, CheckCircle, MessageCircle, Phone, X } from 'lucide-react';
+import { useState, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ChevronRight, ShoppingCart, CheckCircle, MessageCircle, Phone, X, Check, Plus, Minus, Trash2 } from 'lucide-react';
 import './PicklePage.scss';
 
 const HERO_IMAGE = 'https://images.pexels.com/photos/4110541/pexels-photo-4110541.jpeg?auto=compress&cs=tinysrgb&w=1600';
@@ -41,16 +41,9 @@ function HeroSection() {
 }
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
-function ProductCard({ item, selected, onToggle }) {
+function ProductCard({ item, count, onAdd, onRemove }) {
   return (
-    <div
-      className={`pk-product${selected ? ' pk-product--selected' : ''}`}
-      onClick={() => onToggle(item.id)}
-      role="checkbox"
-      aria-checked={selected}
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onToggle(item.id); }}
-    >
+    <div className="pk-product">
       <div className="pk-product__img-wrap">
         <img
           src={`${ITEMS_BASE_URL}${item.id}.jpg`}
@@ -58,25 +51,37 @@ function ProductCard({ item, selected, onToggle }) {
           className="pk-product__img"
           loading="lazy"
         />
-        <div className={`pk-product__check${selected ? ' pk-product__check--active' : ''}`}>
-          {selected && <CheckCircle size={18} />}
-        </div>
       </div>
       <div className="pk-product__info">
         <p className="pk-product__price">₹ {item.price}</p>
         <p className="pk-product__name">{item.name}</p>
+        {count > 0 ? (
+          <div className="pk-product__counter">
+            <button onClick={() => onRemove(item.id)} className="pk-product__counter-btn" aria-label="Remove one">
+              <Minus size={10} />
+            </button>
+            <span>{count}</span>
+            <button onClick={() => onAdd(item.id)} className="pk-product__counter-btn" aria-label="Add one more">
+              <Plus size={10} />
+            </button>
+          </div>
+        ) : (
+          <button onClick={() => onAdd(item.id)} className="pk-product__add-btn" aria-label={`Add ${item.name}`}>
+            <Plus size={14} />
+          </button>
+        )}
       </div>
     </div>
   );
 }
 
 // ─── Enquiry Form ─────────────────────────────────────────────────────────────
-function EnquiryForm({ selectedItems, onClose }) {
-  const [form, setForm] = useState({ name: '', phone: '', location: '', message: '' });
+function EnquiryForm({ selectedItems, onClose, onRemoveItem, onAdd, onMinus }) {
+  const [form, setForm] = useState({ name: '', phone: '', email: '', boxes: '', location: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
   const set = (key, val) => setForm((prev) => ({ ...prev, [key]: val }));
-  const totalPrice = selectedItems.reduce((acc, item) => acc + item.price, 0);
+  const totalPrice = selectedItems.reduce((acc, item) => acc + item.price * (item.count || 1), 0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -122,7 +127,15 @@ function EnquiryForm({ selectedItems, onClose }) {
           <div key={item.id} className="pk-enquiry-panel__item">
             <img src={`${ITEMS_BASE_URL}${item.id}.jpg`} alt={item.name} className="pk-enquiry-panel__item-img" />
             <span className="pk-enquiry-panel__item-name">{item.name}</span>
-            <span className="pk-enquiry-panel__item-price">₹ {item.price}</span>
+            <div className="pk-enquiry-panel__item-qty-btns">
+              <button type="button" onClick={() => onMinus(item.id)} aria-label="Decrease">−</button>
+              <span>{item.count || 1}</span>
+              <button type="button" onClick={() => onAdd(item.id)} aria-label="Increase">+</button>
+            </div>
+            <span className="pk-enquiry-panel__item-price">₹ {item.price * (item.count || 1)}</span>
+            <button type="button" className="pk-enquiry-panel__item-remove" onClick={() => onRemoveItem(item.id)} aria-label="Remove">
+              <Trash2 size={14} />
+            </button>
           </div>
         ))}
       </div>
@@ -138,6 +151,18 @@ function EnquiryForm({ selectedItems, onClose }) {
             <label className="pk-enquiry-panel__label"><span className="pk-req">*</span> Mobile Number</label>
             <input type="tel" className="pk-enquiry-panel__input" placeholder="eg. 98xxxxxx10"
               value={form.phone} onChange={(e) => set('phone', e.target.value)} required />
+          </div>
+        </div>
+        <div className="pk-enquiry-panel__row">
+          <div className="pk-enquiry-panel__group">
+            <label className="pk-enquiry-panel__label">Email Address</label>
+            <input type="email" className="pk-enquiry-panel__input" placeholder="your@email.com"
+              value={form.email} onChange={(e) => set('email', e.target.value)} />
+          </div>
+          <div className="pk-enquiry-panel__group">
+            <label className="pk-enquiry-panel__label">No. of Boxes</label>
+            <input type="number" className="pk-enquiry-panel__input" placeholder="e.g. 10"
+              value={form.boxes} onChange={(e) => set('boxes', e.target.value)} />
           </div>
         </div>
         <div className="pk-enquiry-panel__group">
@@ -159,23 +184,51 @@ function EnquiryForm({ selectedItems, onClose }) {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function PicklePage() {
-  const [selected, setSelected] = useState([]);
+  const navigate = useNavigate();
+  const [plate, setPlate] = useState({});
   const [showEnquiry, setShowEnquiry] = useState(false);
+  const [toast, setToast] = useState(null);
 
-  const toggleItem = (id) => {
-    setSelected((prev) => prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]);
+  const showToast = useCallback((message) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 2500);
+  }, []);
+
+  const handleAdd = (id) => {
+    const item = PICKLE_ITEMS.find(i => i.id === id);
+    setPlate(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+    if (item) showToast(`${item.name} added!`);
   };
 
-  const selectedItems = PICKLE_ITEMS.filter((item) => selected.includes(item.id));
-  const totalPrice = selectedItems.reduce((acc, item) => acc + item.price, 0);
+  const handleRemove = (id) => {
+    setPlate(prev => {
+      const next = { ...prev };
+      if (next[id] > 1) next[id]--;
+      else delete next[id];
+      return next;
+    });
+  };
+
+  const selectedItems = PICKLE_ITEMS.filter((item) => plate[item.id]).map(item => ({
+    ...item,
+    count: plate[item.id]
+  }));
+  const totalItems = Object.values(plate).reduce((sum, c) => sum + c, 0);
+  const totalPrice = selectedItems.reduce((acc, item) => acc + item.price * item.count, 0);
 
   const handleCloseEnquiry = () => {
     setShowEnquiry(false);
-    setSelected([]);
+    setPlate({});
   };
 
   return (
     <div className="pickle-page">
+      {toast && (
+        <div className="pk-toast">
+          <Check size={16} />
+          {toast}
+        </div>
+      )}
       <HeroSection />
 
       <div className="pk-body">
@@ -188,20 +241,20 @@ export default function PicklePage() {
               <p className="pk-body__subtitle">Select items to request a quote — handcrafted with traditional recipes</p>
             </div>
             <button
-              className={`pk-cart-btn${selected.length > 0 ? ' pk-cart-btn--active' : ''}`}
-              onClick={() => selected.length > 0 && setShowEnquiry(true)}
+              className={`pk-cart-btn${totalItems > 0 ? ' pk-cart-btn--active' : ''}`}
+              onClick={() => totalItems > 0 && setShowEnquiry(true)}
               aria-label="View cart"
             >
               <ShoppingCart size={18} />
-              <span>Cart ({selected.length})</span>
-              {selected.length > 0 && <span className="pk-cart-btn__total">₹ {totalPrice.toLocaleString()}</span>}
+              <span>Cart ({totalItems})</span>
+              {totalItems > 0 && <span className="pk-cart-btn__total">₹ {totalPrice.toLocaleString()}</span>}
             </button>
           </div>
 
           {/* Enquiry panel */}
           {showEnquiry && (
             <div className="pk-enquiry-overlay">
-              <EnquiryForm selectedItems={selectedItems} onClose={handleCloseEnquiry} />
+              <EnquiryForm selectedItems={selectedItems} onClose={handleCloseEnquiry} onRemoveItem={handleRemove} onAdd={handleAdd} onMinus={handleRemove} />
             </div>
           )}
 
@@ -211,46 +264,32 @@ export default function PicklePage() {
               <ProductCard
                 key={item.id}
                 item={item}
-                selected={selected.includes(item.id)}
-                onToggle={toggleItem}
+                count={plate[item.id] || 0}
+                onAdd={handleAdd}
+                onRemove={handleRemove}
               />
             ))}
           </div>
 
           {/* Sticky cart bar */}
-          {selected.length > 0 && !showEnquiry && (
-            <div className="pk-sticky-bar">
-              <div className="pk-sticky-bar__inner">
-                <div className="pk-sticky-bar__info">
-                  <ShoppingCart size={20} className="pk-sticky-bar__icon" />
-                  <span className="pk-sticky-bar__count">{selected.length} item{selected.length > 1 ? 's' : ''} selected</span>
-                  <span className="pk-sticky-bar__sep">·</span>
-                  <span className="pk-sticky-bar__total">₹ {totalPrice.toLocaleString()}</span>
-                </div>
-                <div className="pk-sticky-bar__actions">
-                  <button type="button" className="pk-sticky-bar__clear" onClick={() => setSelected([])}>Clear</button>
-                  <button type="button" className="pk-sticky-bar__cta" onClick={() => setShowEnquiry(true)}>Request Quote</button>
-                </div>
-              </div>
-            </div>
-          )}
+          
         </div>
       </div>
 
       {/* Contact strip */}
-      <div className="pk-contact-strip">
+      {/* <div className="pk-contact-strip">
         <div className="pk-contact-strip__inner">
           <p className="pk-contact-strip__text">Have a question? Reach us directly.</p>
           <div className="pk-contact-strip__actions">
             <a href="tel:+918926262674" className="pk-contact-strip__btn pk-contact-strip__btn--call">
-              <Phone size={15} /> +91-89262 62674
+              <Phone size={15} /> +91-89262 62675
             </a>
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="pk-contact-strip__btn pk-contact-strip__btn--wa">
               <MessageCircle size={15} /> WhatsApp
             </a>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

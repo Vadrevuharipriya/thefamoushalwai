@@ -1,15 +1,14 @@
-import { useParams, Link } from 'react-router-dom';
-import { ArrowRight, Phone, MessageCircle, ChevronRight, Star, Users, Clock, Award } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, Phone, MessageCircle, ChevronRight, Star, Users, Award } from 'lucide-react';
 import { occasions, professionals } from '../../data/homeData';
 import { occasionPageData, getFallbackData } from '../../data/occasionPageData';
 import { slugify } from '../../utils/slugify';
 import './OccasionPage.scss';
 
 const WHATSAPP_URL = 'https://wa.me/918926262674';
-const PHONE_URL = 'tel:+918926262674';
 
 // ─── Hero ──────────────────────────────────────────────────────────────────────
-function HeroSection({ occasion, pageData }) {
+function HeroSection({ occasion, pageData, onBookNow }) {
   return (
     <section
       className="op-hero"
@@ -32,15 +31,15 @@ function HeroSection({ occasion, pageData }) {
         <h1 className="op-hero__title">{occasion.name}</h1>
         <p className="op-hero__tagline">{pageData.tagline}</p>
 
-        <div className="op-hero__price">
+        {/* <div className="op-hero__price">
           Starting <strong>{occasion.price}</strong> / plate
-        </div>
+        </div> */}
 
         <div className="op-hero__actions">
-          <a href={PHONE_URL} className="btn-red">
+          <button onClick={onBookNow} className="btn-red">
             <Phone size={16} />
             Book Now
-          </a>
+          </button>
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
             className="op-hero__whatsapp-btn">
             <MessageCircle size={16} />
@@ -105,10 +104,10 @@ function OverviewSection({ occasion, pageData }) {
             className="op-overview__image"
             onError={(e) => { e.target.src = `https://picsum.photos/600/450?u=${occasion.id}`; }}
           />
-          <div className="op-overview__image-badge">
-            <span className="font-heading font-black text-white text-xl">{occasion.price}</span>
+          {/* <div className="op-overview__image-badge">
+            <span className="font-heading font-black text-white text-xl">{occasion.price}</span> 
             <span className="font-body text-white/80 text-xs">/ plate onwards</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
@@ -214,7 +213,7 @@ function ProsSection({ pros }) {
 }
 
 // ─── Booking CTA ────────────────────────────────────────────────────────────────
-function BookingCTA({ occasion }) {
+function BookingCTA({ occasion, onBookNow }) {
   return (
     <section className="op-cta">
       <div className="op-cta__inner">
@@ -235,10 +234,10 @@ function BookingCTA({ occasion }) {
           </ul>
         </div>
         <div className="op-cta__actions">
-          <a href={PHONE_URL} className="op-cta__btn op-cta__btn--white">
+          <button onClick={onBookNow} className="op-cta__btn op-cta__btn--white">
             <Phone size={18} />
             Call Us Now
-          </a>
+          </button>
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
             className="op-cta__btn op-cta__btn--outline">
             <MessageCircle size={18} />
@@ -279,7 +278,7 @@ function RelatedSection({ related }) {
               <div className="op-related-card__overlay" />
               <div className="op-related-card__content">
                 <h3 className="op-related-card__name">{occ.name}</h3>
-                <span className="op-related-card__price">From {occ.price}/plate</span>
+                {/* <span className="op-related-card__price">From {occ.price}/plate</span> */}
               </div>
             </Link>
           ))}
@@ -309,23 +308,28 @@ function NotFound({ slug }) {
 // ─── Main page ─────────────────────────────────────────────────────────────────
 export default function OccasionPage() {
   const { occasion: slug } = useParams();
+  const navigate = useNavigate();
 
   const occasion = occasions.find((o) => slugify(o.name) === slug);
   const pageData = occasionPageData[slug] || getFallbackData(slug);
   const related = occasions.filter((o) => slugify(o.name) !== slug).slice(0, 4);
   const pros = professionals.slice(0, 3);
 
+  const handleBookNow = () => {
+    navigate('/enquiry', { state: { occasion: { name: occasion.name, price: occasion.price } } });
+  };
+
   if (!occasion) return <NotFound slug={slug} />;
 
   return (
     <div className="occasion-page">
-      <HeroSection occasion={occasion} pageData={pageData} />
+      <HeroSection occasion={occasion} pageData={pageData} onBookNow={handleBookNow} />
       <StatsStrip stats={pageData.stats} />
       <OverviewSection occasion={occasion} pageData={pageData} />
       <FeaturesSection features={pageData.features} />
       <MenuSection menuHighlights={pageData.menuHighlights} />
       <ProsSection pros={pros} />
-      <BookingCTA occasion={occasion} />
+      <BookingCTA occasion={occasion} onBookNow={handleBookNow} />
       <RelatedSection related={related} />
     </div>
   );

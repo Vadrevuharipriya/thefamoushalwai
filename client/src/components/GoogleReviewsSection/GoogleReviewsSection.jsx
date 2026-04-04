@@ -5,7 +5,7 @@ import './GoogleReviewsSection.scss';
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 const getVisibleCount = (width) => {
-  if (width >= 1024) return 3;
+  if (width >= 1024) return 4;
   if (width >= 640) return 2;
   return 1;
 };
@@ -178,26 +178,8 @@ export default function GoogleReviewsSection() {
         <p className="google-reviews__subtitle">With 99% Success Rate</p>
       </div>
 
-      {/* ── Content row: left panel + carousel ── */}
-      <div className="google-reviews__content">
-
-        {/* Left: rating summary */}
-        <div className="google-reviews__left">
-          <div className="google-reviews__big-rating">{meta.rating}</div>
-          <div className="google-reviews__stars-box">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} size={24} fill="#F5A623" color="#F5A623" />
-            ))}
-          </div>
-          <p className="google-reviews__label">Google Overall Rating</p>
-          <p className="google-reviews__business">
-            The Famous Halwai - Caters, Chef, event planer,<br />
-            Halwai, cloud kitchen, ETC
-          </p>
-          <div className="google-reviews__total">{meta.totalReviews} Reviews</div>
-        </div>
-
-        {/* Right: sliding carousel */}
+      {/* ── Content row: carousel only ── */}
+      <div className="google-reviews__carousel">
         <div className="google-reviews__right">
 
           {/* Carousel wrap — position context for nav arrows */}
