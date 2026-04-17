@@ -89,8 +89,8 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Search & Filter */}
-      <section className="blog-filter">
+      /* {/* Search & Filter */}
+      {/* <section className="blog-filter">
         <div className="blog-filter__inner">
           <div className="blog-filter__search">
             <Search size={18} className="blog-filter__search-icon" />
@@ -103,11 +103,11 @@ export default function BlogPage() {
               </button>
             ))}
           </div>
-        </div>
-      </section>
+      //   </div> */}
+      {/* </section>  */}
 
-      {/* Featured Post */}
-      <section className="blog-featured">
+      /* {/* Featured Post */}
+      {/* <section className="blog-featured">
         <div className="blog-featured__inner">
           <div className="blog-featured__card">
             <img src={BLOG_POSTS[0].image} alt={BLOG_POSTS[0].title} className="blog-featured__img" />
@@ -124,8 +124,8 @@ export default function BlogPage() {
               </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </div> */}
+      {/* </section>  */}
 
       {/* Blog Grid */}
       <section className="blog-grid">
