@@ -165,10 +165,6 @@ export default function Footer({ showPartnerCTA = true }) {
                 <Phone size={14} className="text-brand-red" />
                 +91-8926262674
               </a>
-              <a href="tel:+918926262675" className="flex items-center gap-2 font-body text-sm text-gray-400 hover:text-brand-gold transition-colors">
-                <Phone size={14} className="text-brand-red" />
-                +91-8926262675
-              </a>
               <a 
                 href="https://www.google.com/maps/search/?api=1&query=B-191+Kushak+No+2+Kadhi+Pur+Delhi+110036" 
                 target="_blank" 
