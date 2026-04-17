@@ -2,10 +2,10 @@
 @use '../../styles/mixins' as *;
 
 .occasions-section {
-  padding: 3.5rem 1rem;
+  padding: 3.5rem 0;
   background-color: $white;
 
-  @include md { padding: 5rem 1rem; }
+  @include md { padding: 5rem 0; }
 
   &__bento-card {
     position: relative;

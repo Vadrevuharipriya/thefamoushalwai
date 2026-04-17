@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, CheckCircle, Phone, MessageCircle } from 'lucide-react';
+import { navOccasions } from '../../data/homeData';
 import './EnquiryPage.scss';
 
 const HERO_IMAGE = 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1600';
@@ -11,8 +12,6 @@ const LOCATIONS = [
   'Lucknow', 'Jaipur', 'Tehri Garhwal', 'Noida', 'Gurugram',
   'Ghaziabad', 'Yamunanagar', 'Chandigarh', 'Saharanpur',
 ];
-
-const MEALS = ['Breakfast', 'Lunch', 'Evening Snacks', 'Dinner'];
 
 // ─── Hero ──────────────────────────────────────────────────────────────────────
 function HeroSection() {
@@ -58,39 +57,20 @@ function TrustBar() {
 }
 
 // ─── Form ─────────────────────────────────────────────────────────────────────
-function EnquiryForm({ incomingPlate }) {
+function EnquiryForm({ preSelectedOccasion }) {
   const today = new Date().toISOString().split('T')[0];
 
   const [form, setForm] = useState({
+    occasion: preSelectedOccasion || '',
     location: '',
     name: '',
     phone: '',
     email: '',
     date: '',
-    meals: [],
   });
   const [submitted, setSubmitted] = useState(false);
 
-  // Pre-fill form when coming from ViewMenuCartPage
-  useEffect(() => {
-    if (incomingPlate && Object.keys(incomingPlate).length > 0) {
-      // Optionally pre-fill any fields based on the plate
-      // For now, we just acknowledge the plate was received
-      console.log('Plate received from menu:', incomingPlate);
-    }
-  }, [incomingPlate]);
-
   const set = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
-
-  const toggleArray = (key, value) => {
-    setForm((prev) => {
-      const arr = prev[key];
-      return {
-        ...prev,
-        [key]: arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value],
-      };
-    });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -122,8 +102,23 @@ function EnquiryForm({ incomingPlate }) {
         Please fill out your information below and our Customer Representative will contact you shortly.
       </p>
 
-      {/* Row: Location + Date */}
+      {/* Row: Occasion + Location */}
       <div className="eq-form__row">
+        <div className="eq-form__group">
+          <label className="eq-form__label"><span className="eq-form__req">*</span> Select Occasion</label>
+          <select
+            className="eq-form__select"
+            value={form.occasion}
+            onChange={(e) => set('occasion', e.target.value)}
+            required
+          >
+            <option value="">— Select Occasion * —</option>
+            {navOccasions.map((occ) => (
+              <option key={occ} value={occ}>{occ}</option>
+            ))}
+          </select>
+        </div>
+
         <div className="eq-form__group">
           <label className="eq-form__label"><span className="eq-form__req">*</span> Select Location</label>
           <select
@@ -136,7 +131,10 @@ function EnquiryForm({ incomingPlate }) {
             {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
           </select>
         </div>
+      </div>
 
+      {/* Row: Date + Name */}
+      <div className="eq-form__row">
         <div className="eq-form__group">
           <label className="eq-form__label"><span className="eq-form__req">*</span> Select Date</label>
           <input
@@ -148,10 +146,7 @@ function EnquiryForm({ incomingPlate }) {
             required
           />
         </div>
-      </div>
 
-      {/* Row: Name + Phone */}
-      <div className="eq-form__row">
         <div className="eq-form__group">
           <label className="eq-form__label"><span className="eq-form__req">*</span> Full Name</label>
           <input
@@ -163,7 +158,10 @@ function EnquiryForm({ incomingPlate }) {
             required
           />
         </div>
+      </div>
 
+      {/* Row: Phone + Email */}
+      <div className="eq-form__row">
         <div className="eq-form__group">
           <label className="eq-form__label"><span className="eq-form__req">*</span> Mobile Number</label>
           <input
@@ -175,41 +173,23 @@ function EnquiryForm({ incomingPlate }) {
             required
           />
         </div>
-      </div>
 
-      {/* Email */}
-      <div className="eq-form__group">
-        <label className="eq-form__label"><span className="eq-form__req">*</span> Email Address</label>
-        <input
-          type="email"
-          className="eq-form__input"
-          placeholder="Email Address"
-          value={form.email}
-          onChange={(e) => set('email', e.target.value)}
-          required
-        />
-      </div>
-
-      {/* Meals */}
-      <div className="eq-form__group">
-        <label className="eq-form__label"><span className="eq-form__req">*</span> Select Meals</label>
-        <div className="eq-toggle-group">
-          {MEALS.map((meal) => (
-            <button
-              key={meal}
-              type="button"
-              className={`eq-toggle-btn ${form.meals.includes(meal) ? 'eq-toggle-btn--active' : ''}`}
-              onClick={() => toggleArray('meals', meal)}
-            >
-              {meal}
-            </button>
-          ))}
+        <div className="eq-form__group">
+          <label className="eq-form__label"><span className="eq-form__req">*</span> Email Address</label>
+          <input
+            type="email"
+            className="eq-form__input"
+            placeholder="Email Address"
+            value={form.email}
+            onChange={(e) => set('email', e.target.value)}
+            required
+          />
         </div>
       </div>
 
       <div className="eq-form__footer">
         <button type="submit" className="eq-form__submit">
-         Process Now
+          Process Now
         </button>
         <p className="eq-form__privacy">
           🔒 Your details are safe with us. We never share your data.
@@ -258,7 +238,8 @@ function ContactAside() {
 export default function EnquiryPage() {
   const location = useLocation();
   const incomingPlate = location.state?.plate || null;
-  
+  const preSelectedOccasion = location.state?.occasion || new URLSearchParams(location.search).get('occasion');
+
   return (
     <div className="enquiry-page">
       <HeroSection />
@@ -270,7 +251,7 @@ export default function EnquiryPage() {
               <h2 className="eq-form-card__heading">
                 {incomingPlate ? 'Confirm Your Menu Selection' : 'Enquiry Now'}
               </h2>
-              <EnquiryForm incomingPlate={incomingPlate} />
+              <EnquiryForm preSelectedOccasion={preSelectedOccasion} />
             </div>
           </div>
           <ContactAside />

@@ -157,25 +157,19 @@
   cursor: pointer;
   transition: $transition-base;
 
-  &--active {
-    background: $gradient-red;
-    color: $white;
-    border-color: $brand-red;
-    box-shadow: $shadow-red;
-
-    &:hover {
-      box-shadow: 0 8px 24px rgba($brand-red,0.45);
-      transform: translateY(-1px);
-    }
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
   }
 
-  &__total {
-    font-family: $font-heading;
-    font-weight: 900;
-    font-size: 0.85rem;
-    background: rgba(255,255,255,0.22);
-    border-radius: $radius-full;
-    padding: 0.1rem 0.5rem;
+  &--active {
+    background: $white;
+    color: $brand-red;
+    border-color: $brand-red;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba($brand-red,0.2);
+    }
   }
 }
 
@@ -204,11 +198,11 @@
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 .ch-product {
-  background: $white;
-  border-radius: $radius-xl;
+  position: relative;
   overflow: hidden;
+  border-radius: $radius-3xl;
+  background: $white;
   box-shadow: $shadow-card;
-  border: 1.5px solid transparent;
   cursor: pointer;
   transition: $transition-medium;
   user-select: none;
@@ -217,23 +211,16 @@
   &:hover {
     box-shadow: $shadow-card-hover;
     transform: translateY(-3px);
-    border-color: rgba($brand-red, 0.3);
   }
 
   &:focus-visible {
     box-shadow: 0 0 0 3px rgba($brand-red, 0.3);
-    border-color: $brand-red;
-  }
-
-  &--selected {
-    border-color: $brand-red;
-    box-shadow: 0 0 0 2px rgba($brand-red, 0.18), $shadow-card;
   }
 
   &__img-wrap {
     position: relative;
     width: 100%;
-    padding-top: 100%;
+    padding-top: 75%; // 4:3 aspect ratio
     overflow: hidden;
   }
 
@@ -243,10 +230,76 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.7s ease;
   }
 
-  &:hover &__img { transform: scale(1.06); }
+  &:hover &__img {
+    transform: scale(1.08);
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+  }
+
+  &__hover-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba($brand-red, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  &:hover &__hover-overlay {
+    opacity: 1;
+  }
+
+  &__info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.75rem 0.6rem 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    transform: translateY(2px);
+    transition: transform 0.3s ease;
+    z-index: 1;
+  }
+
+  &:hover &__info {
+    transform: translateY(0);
+  }
+
+  &__price,
+  &__name {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__price {
+    font-family: $font-heading;
+    font-weight: 900;
+    font-size: 0.88rem;
+    color: $white;
+    margin: 0 0 0.2rem;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
+
+  &__name {
+    font-family: $font-body;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: $white;
+    line-height: 1.3;
+    margin: 0;
+    flex: 1;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
 
   &__add-btn {
     position: static;
@@ -313,31 +366,6 @@
       color: $brand-red;
       background: rgba($brand-red, 0.1);
     }
-  }
-
-  &__info {
-    padding: 0.5rem 0.6rem 0.6rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.35rem;
-  }
-
-  &__price {
-    font-family: $font-heading;
-    font-weight: 900;
-    font-size: 0.88rem;
-    color: $brand-red;
-    margin: 0 0 0.2rem;
-  }
-
-  &__name {
-    font-family: $font-body;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #333;
-    line-height: 1.3;
-    margin: 0;
-    flex: 1;
   }
 }
 
@@ -464,23 +492,39 @@
     color: #555;
   }
 
-  &__input,
-  &__textarea {
-    width: 100%;
-    padding: 0.7rem 0.9rem;
-    border: 1.5px solid $border-color;
-    border-radius: $radius-lg;
-    font-family: $font-body;
-    font-size: 0.88rem;
-    color: $dark;
-    background: $white;
-    outline: none;
-    transition: $transition-base;
-    resize: none;
+   &__input {
+     width: 100%;
+     padding: 0.7rem 0.9rem;
+     border: 1.5px solid $border-color;
+     border-radius: $radius-lg;
+     font-family: $font-body;
+     font-size: 0.88rem;
+     color: $dark;
+     background: $white;
+     outline: none;
+     transition: $transition-base;
+     resize: none;
 
-    &::placeholder { color: #b0b0b0; }
-    &:focus { border-color: $brand-red; box-shadow: 0 0 0 3px rgba($brand-red, 0.1); }
-  }
+     &::placeholder { color: #b0b0b0; }
+     &:focus { border-color: $brand-red; box-shadow: 0 0 0 3px rgba($brand-red, 0.1); }
+   }
+
+   &__textarea {
+     width: 100%;
+     padding: 0.7rem 0.9rem;
+     border: 1.5px solid $border-color;
+     border-radius: $radius-lg;
+     font-family: $font-body;
+     font-size: 0.88rem;
+     color: $dark;
+     background: $white;
+     outline: none;
+     transition: $transition-base;
+     resize: none;
+
+     &::placeholder { color: #b0b0b0; }
+     &:focus { border-color: $brand-red; box-shadow: 0 0 0 3px rgba($brand-red, 0.1); }
+   }
 
   &__submit {
     font-family: $font-heading;

@@ -1,0 +1,173 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.service-product-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: $radius-3xl;
+  background: $white;
+  box-shadow: $shadow-card;
+  cursor: pointer;
+  transition: $transition-medium;
+  user-select: none;
+  outline: none;
+  height: 100%;
+
+  &:hover {
+    box-shadow: $shadow-card-hover;
+    transform: translateY(-3px);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba($brand-red, 0.3);
+  }
+
+  &__img-container {
+    position: relative;
+    width: 100%;
+    padding-top: 75%; // 4:3 aspect ratio
+    overflow: hidden;
+  }
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+  }
+
+  &:hover &__img {
+    transform: scale(1.08);
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+  }
+
+  &__hover-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba($brand-red, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  &:hover &__hover-overlay {
+    opacity: 1;
+  }
+
+  &__name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.75rem 0.6rem 0.6rem;
+    margin: 0;
+    color: $white;
+    font-family: $font-heading;
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.3;
+    z-index: 1;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+    transform: translateY(2px);
+  }
+
+  &:hover &__name {
+    transform: translateY(0);
+  }
+
+  &__info {
+    padding: 0.75rem 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: $white;
+    border-top: 1.5px solid $border-color;
+    position: relative;
+    z-index: 2;
+  }
+
+  &__price-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    color: $dark;
+  }
+
+  &__currency {
+    font-family: $font-body;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  &__price {
+    font-family: $font-heading;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: $brand-red;
+  }
+
+  &__add-btn {
+    padding: 6px 20px;
+    border-radius: $radius-full;
+    border: 1.5px solid $border-color;
+    background: $white;
+    color: #555;
+    font-family: $font-heading;
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: $transition-fast;
+
+    &:hover {
+      border-color: $brand-red;
+      color: $brand-red;
+      background: rgba($brand-red, 0.04);
+      transform: scale(1.02);
+    }
+  }
+
+  &__counter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba($brand-red, 0.05);
+    padding: 4px 8px;
+    border-radius: $radius-full;
+    border: 1.5px solid $border-color;
+  }
+
+  &__counter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    color: $brand-red;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  &__count {
+    font-family: $font-heading;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: $brand-red;
+    min-width: 20px;
+    text-align: center;
+  }
+}

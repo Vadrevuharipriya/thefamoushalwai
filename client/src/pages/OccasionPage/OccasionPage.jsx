@@ -316,7 +316,7 @@ export default function OccasionPage() {
   const pros = professionals.slice(0, 3);
 
   const handleBookNow = () => {
-    navigate('/enquiry', { state: { occasion: { name: occasion.name, price: occasion.price } } });
+    navigate('/enquiry', { state: { occasion: occasion.name } });
   };
 
   if (!occasion) return <NotFound slug={slug} />;

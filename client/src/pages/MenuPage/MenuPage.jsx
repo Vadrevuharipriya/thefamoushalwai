@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Plus, Minus, ShoppingBag, X, UtensilsCrossed, Check } from 'lucide-react';
 import { menuSections, menuFilterCategories } from '../../data/menuData';
 import { cities, navOccasions } from '../../data/homeData';
+import MenuDishCard from '../../components/MenuDishCard/MenuDishCard';
 import './MenuPage.scss';
 
 const VEG_ICON = 'https://www.thefamoushalwai.com/frontEnd/images/veg_icon.png';
@@ -19,57 +20,6 @@ const heroImages = [
 const allDishesMap = {};
 menuSections.forEach(s => s.items.forEach(d => { allDishesMap[d.id] = d; }));
 
-// ─── Dish Card ────────────────────────────────────────────────────────────────
-function DishCard({ dish, count, onAdd, onRemove }) {
-  return (
-    <div className="dish-card">
-      <div className="dish-card__img-wrap">
-        <img
-          src={dish.image}
-          alt={dish.name}
-          className="dish-card__img"
-          loading="lazy"
-          onError={e => { e.target.src = `https://picsum.photos/200/200?u=dish-${dish.id}`; }}
-        />
-      </div>
-      <div className="dish-card__info">
-        <img
-          src={dish.veg ? VEG_ICON : NON_VEG_ICON}
-          alt={dish.veg ? 'Veg' : 'Non-Veg'}
-          className="dish-card__veg-icon"
-        />
-        <p className="dish-card__name">{dish.name}</p>
-        {count > 0 ? (
-          <div className="dish-card__counter">
-            <button
-              onClick={() => onRemove(dish.id)}
-              className="dish-card__counter-btn"
-              aria-label="Remove one"
-            >
-              <Minus size={10} />
-            </button>
-            <span>{count}</span>
-            <button
-              onClick={() => onAdd(dish)}
-              className="dish-card__counter-btn"
-              aria-label="Add one more"
-            >
-              <Plus size={10} />
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={() => onAdd(dish)}
-            className="dish-card__add-btn"
-            aria-label={`Add ${dish.name}`}
-          >
-            <Plus size={14} />
-          </button>
-        )}
-      </div>
-    </div>
-  );
-}
 
 // ─── Cuisine Section ──────────────────────────────────────────────────────────
 function CuisineSection({ section, activeCategory, vegOnly, nonVegOnly, plateMap, onAdd, onRemove }) {
@@ -93,7 +43,7 @@ function CuisineSection({ section, activeCategory, vegOnly, nonVegOnly, plateMap
       </div>
       <div className="menu-section__grid">
         {items.map(dish => (
-          <DishCard
+          <MenuDishCard
             key={dish.id}
             dish={dish}
             count={plateMap[dish.id] || 0}
@@ -384,12 +334,6 @@ export default function MenuPage() {
                 onClick={() => navigate('/view-menu-cart', { state: { plate } })}
               >
                 📞 Send Enquiry
-              </button>
-              <button
-                className="plate-drawer__clear"
-                onClick={() => setPlate({})}
-              >
-                Clear Plate
               </button>
             </div>
           </div>

@@ -1,31 +1,13 @@
 import { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronRight, ShoppingCart, CheckCircle, MessageCircle, Phone, X, Check, Plus, Minus, Trash2 } from 'lucide-react';
+import { chutneyItems } from '../../data/menuData';
+import ServiceProductCard from '../../components/ServiceProductCard/ServiceProductCard';
 import './ChutneysPage.scss';
 
 const HERO_IMAGE = 'https://images.pexels.com/photos/2673353/pexels-photo-2673353.jpeg?auto=compress&cs=tinysrgb&w=1600';
 const WHATSAPP_URL = 'https://wa.me/918926262674?text=Hello! I am interested in Chutney Services.';
 const ITEMS_BASE_URL = 'https://www.thefamoushalwai.com/frontEnd/items/';
-
-const CHUTNEY_ITEMS = [
-  { id: 28, name: 'Tomato Chutney',                     price: 399 },
-  { id: 29, name: 'Mint Peanut Chutney',                price: 399 },
-  { id: 30, name: 'Coconut Chutney',                    price: 399 },
-  { id: 31, name: 'Coriander Coconut Chutney',          price: 399 },
-  { id: 32, name: 'Tomato Thokku',                      price: 399 },
-  { id: 33, name: 'Peanut / Groundnut Chutney',         price: 399 },
-  { id: 34, name: 'Moringa Leaves Chutney',             price: 499 },
-  { id: 35, name: 'Green Tomato Chutney',               price: 499 },
-  { id: 36, name: 'Chana Dal Chutney',                  price: 499 },
-  { id: 37, name: 'Mint Yogurt Chutney',                price: 499 },
-  { id: 38, name: 'Methi Chutney',                      price: 399 },
-  { id: 39, name: 'Capsicum Peanut Chutney',            price: 399 },
-  { id: 40, name: 'Red Bell Pepper Chutney',            price: 399 },
-  { id: 41, name: 'Zucchini Chutney',                   price: 399 },
-  { id: 42, name: 'Walnut Chutney',                     price: 599 },
-  { id: 43, name: 'Mango Chutney',                      price: 599 },
-  { id: 44, name: 'Onion Chutney',                      price: 499 },
-];
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function HeroSection() {
@@ -51,153 +33,12 @@ function HeroSection() {
   );
 }
 
-// ─── Product Card ─────────────────────────────────────────────────────────────
-function ProductCard({ item, count, onAdd, onRemove }) {
-  return (
-    <div className="ch-product">
-      <div className="ch-product__img-wrap">
-        <img
-          src={`${ITEMS_BASE_URL}${item.id}.jpg`}
-          alt={item.name}
-          className="ch-product__img"
-          loading="lazy"
-        />
-      </div>
-      <div className="ch-product__info">
-        <p className="ch-product__price">₹ {item.price}</p>
-        <p className="ch-product__name">{item.name}</p>
-        {count > 0 ? (
-          <div className="ch-product__counter">
-            <button onClick={() => onRemove(item.id)} className="ch-product__counter-btn" aria-label="Remove one">
-              <Minus size={10} />
-            </button>
-            <span>{count}</span>
-            <button onClick={() => onAdd(item.id)} className="ch-product__counter-btn" aria-label="Add one more">
-              <Plus size={10} />
-            </button>
-          </div>
-        ) : (
-          <button onClick={() => onAdd(item.id)} className="ch-product__add-btn" aria-label={`Add ${item.name}`}>
-            <Plus size={14} />
-          </button>
-        )}
-      </div>
-    </div>
-  );
-}
 
-// ─── Enquiry Form (shown when cart has items) ─────────────────────────────────
-function EnquiryForm({ selectedItems, onClose, onRemoveItem, onAdd, onMinus }) {
-  const [form, setForm] = useState({ name: '', phone: '', email: '', boxes: '', location: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
-
-  const set = (key, val) => setForm((prev) => ({ ...prev, [key]: val }));
-  const totalPrice = selectedItems.reduce((acc, item) => acc + item.price * (item.count || 1), 0);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
-  if (submitted) {
-    return (
-      <div className="ch-eq-success">
-        <CheckCircle size={48} className="ch-eq-success__icon" />
-        <h3 className="ch-eq-success__title">Order Enquiry Received!</h3>
-        <p className="ch-eq-success__msg">
-          Thank you, <strong>{form.name}</strong>! We will contact you at <strong>{form.phone}</strong> shortly.
-        </p>
-        <div className="ch-eq-success__actions">
-          <button type="button" className="ch-eq-success__btn ch-eq-success__btn--primary" onClick={onClose}>
-            Continue Browsing
-          </button>
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="ch-eq-success__btn ch-eq-success__btn--wa">
-            <MessageCircle size={15} /> WhatsApp
-          </a>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="ch-enquiry-panel">
-      <div className="ch-enquiry-panel__head">
-        <div>
-          <h3 className="ch-enquiry-panel__title">Request a Quote</h3>
-          <p className="ch-enquiry-panel__sub">
-            {selectedItems.length} item{selectedItems.length > 1 ? 's' : ''} selected &middot; Total: ₹ {totalPrice.toLocaleString()}
-          </p>
-        </div>
-        <button type="button" className="ch-enquiry-panel__close" onClick={onClose} aria-label="Close">
-          <X size={18} />
-        </button>
-      </div>
-
-      <div className="ch-enquiry-panel__items">
-        {selectedItems.map((item) => (
-          <div key={item.id} className="ch-enquiry-panel__item">
-            <img src={`${ITEMS_BASE_URL}${item.id}.jpg`} alt={item.name} className="ch-enquiry-panel__item-img" />
-            <span className="ch-enquiry-panel__item-name">{item.name}</span>
-            <div className="ch-enquiry-panel__item-qty-btns">
-              <button type="button" onClick={() => onMinus(item.id)} aria-label="Decrease">−</button>
-              <span>{item.count || 1}</span>
-              <button type="button" onClick={() => onAdd(item.id)} aria-label="Increase">+</button>
-            </div>
-            <span className="ch-enquiry-panel__item-price">₹ {item.price * (item.count || 1)}</span>
-            <button type="button" className="ch-enquiry-panel__item-remove" onClick={() => onRemoveItem(item.id)} aria-label="Remove">
-              <Trash2 size={14} />
-            </button>
-          </div>
-        ))}
-      </div>
-
-      <form onSubmit={handleSubmit} noValidate className="ch-enquiry-panel__form">
-        <div className="ch-enquiry-panel__row">
-          <div className="ch-enquiry-panel__group">
-            <label className="ch-enquiry-panel__label"><span className="ch-req">*</span> Your Name</label>
-            <input type="text" className="ch-enquiry-panel__input" placeholder="Your Name"
-              value={form.name} onChange={(e) => set('name', e.target.value)} required />
-          </div>
-          <div className="ch-enquiry-panel__group">
-            <label className="ch-enquiry-panel__label"><span className="ch-req">*</span> Mobile Number</label>
-            <input type="tel" className="ch-enquiry-panel__input" placeholder="eg. 98xxxxxx10"
-              value={form.phone} onChange={(e) => set('phone', e.target.value)} required />
-          </div>
-        </div>
-        <div className="ch-enquiry-panel__row">
-          <div className="ch-enquiry-panel__group">
-            <label className="ch-enquiry-panel__label">Email Address</label>
-            <input type="email" className="ch-enquiry-panel__input" placeholder="your@email.com"
-              value={form.email} onChange={(e) => set('email', e.target.value)} />
-          </div>
-          <div className="ch-enquiry-panel__group">
-            <label className="ch-enquiry-panel__label">No. of Boxes</label>
-            <input type="number" className="ch-enquiry-panel__input" placeholder="e.g. 10"
-              value={form.boxes} onChange={(e) => set('boxes', e.target.value)} />
-          </div>
-        </div>
-        <div className="ch-enquiry-panel__group">
-          <label className="ch-enquiry-panel__label">Delivery Location</label>
-          <input type="text" className="ch-enquiry-panel__input" placeholder="City / Area"
-            value={form.location} onChange={(e) => set('location', e.target.value)} />
-        </div>
-        <div className="ch-enquiry-panel__group">
-          <label className="ch-enquiry-panel__label">Additional Notes</label>
-          <textarea className="ch-enquiry-panel__textarea" rows={2}
-            placeholder="Any special requirements…"
-            value={form.message} onChange={(e) => set('message', e.target.value)} />
-        </div>
-        <button type="submit" className="ch-enquiry-panel__submit">Send Enquiry</button>
-      </form>
-    </div>
-  );
-}
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function ChutneysPage() {
   const navigate = useNavigate();
   const [plate, setPlate] = useState({});
-  const [showEnquiry, setShowEnquiry] = useState(false);
   const [toast, setToast] = useState(null);
 
   const showToast = useCallback((message) => {
@@ -206,7 +47,7 @@ export default function ChutneysPage() {
   }, []);
 
   const handleAdd = (id) => {
-    const item = CHUTNEY_ITEMS.find(i => i.id === id);
+    const item = chutneyItems.find(i => i.id === id);
     setPlate(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
     if (item) showToast(`${item.name} added!`);
   };
@@ -220,17 +61,7 @@ export default function ChutneysPage() {
     });
   };
 
-  const selectedItems = CHUTNEY_ITEMS.filter((item) => plate[item.id]).map(item => ({
-    ...item,
-    count: plate[item.id]
-  }));
   const totalItems = Object.values(plate).reduce((sum, c) => sum + c, 0);
-  const totalPrice = selectedItems.reduce((acc, item) => acc + item.price * item.count, 0);
-
-  const handleCloseEnquiry = () => {
-    setShowEnquiry(false);
-    setPlate({});
-  };
 
   return (
     <div className="chutneys-page">
@@ -253,31 +84,24 @@ export default function ChutneysPage() {
             </div>
             <button
               className={`ch-cart-btn${totalItems > 0 ? ' ch-cart-btn--active' : ''}`}
-              onClick={() => totalItems > 0 && setShowEnquiry(true)}
+              onClick={() => totalItems > 0 && navigate('/view-menu-cart', { state: { plate } })}
               aria-label="View cart"
             >
               <ShoppingCart size={18} />
               <span>Cart ({totalItems})</span>
-              {totalItems > 0 && <span className="ch-cart-btn__total">₹ {totalPrice.toLocaleString()}</span>}
             </button>
           </div>
 
-          {/* Enquiry panel */}
-          {showEnquiry && (
-            <div className="ch-enquiry-overlay">
-              <EnquiryForm selectedItems={selectedItems} onClose={handleCloseEnquiry} onRemoveItem={handleRemove} onAdd={handleAdd} onMinus={handleRemove} />
-            </div>
-          )}
-
           {/* Product grid */}
           <div className="ch-grid">
-            {CHUTNEY_ITEMS.map((item) => (
-              <ProductCard
+            {chutneyItems.map((item) => (
+              <ServiceProductCard
                 key={item.id}
                 item={item}
                 count={plate[item.id] || 0}
                 onAdd={handleAdd}
                 onRemove={handleRemove}
+                imageBaseUrl={ITEMS_BASE_URL}
               />
             ))}
           </div>

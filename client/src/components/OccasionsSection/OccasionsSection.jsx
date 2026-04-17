@@ -34,7 +34,7 @@ export default function OccasionsSection() {
 
   return (
     <section className="occasions-section">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="section-tag mx-auto">🎊 Hire Us For Upcoming Events</div>

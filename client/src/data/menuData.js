@@ -10,6 +10,7 @@ export const menuFilterCategories = [
   { id: 'desserts', label: 'Sweets & Desserts' },
   { id: 'soups', label: 'Soups & Beverages' },
   { id: 'breads', label: 'Breads & Rice' },
+  { id: 'state-special', label: 'Traditional State Food' },
 ];
 
 // Section IDs must match slugify(cuisine.name) from homeData cuisines
@@ -114,6 +115,25 @@ export const menuSections = [
     ],
   },
   {
+    id: 'state-special',
+    name: 'Traditional State Food',
+    emoji: '🇮🇳',
+    items: [
+      { id: 400, name: 'Dal Baati Churma (Rajasthan)', image: `${BASE}400.webp`, veg: true, category: 'main' },
+      { id: 401, name: 'Dhokla (Gujarat)',            image: `${BASE}401.webp`, veg: true, category: 'breakfast' },
+      { id: 402, name: 'Pongal (Tamil Nadu)',         image: `${BASE}402.webp`, veg: true, category: 'breakfast' },
+      { id: 403, name: 'Rasam (South India)',         image: img(5),            veg: true, category: 'soups'    },
+      { id: 404, name: 'Litti Chokha (Bihar)',        image: `${BASE}404.webp`, veg: true, category: 'main'     },
+      { id: 405, name: 'Misal Pav (Maharashtra)',     image: `${BASE}405.webp`, veg: true, category: 'main'     },
+      { id: 406, name: 'Fish Curry (Kerala)',         image: `${BASE}406.webp`, veg: false, category: 'main'    },
+      { id: 407, name: 'Butter Chicken (Punjab)',     image: `${BASE}407.webp`, veg: false, category: 'main'    },
+      { id: 408, name: 'Kosha Mangsho (Bengal)',      image: `${BASE}408.webp`, veg: false, category: 'main'    },
+      { id: 409, name: 'Bisi Bele Bath (Karnataka)',  image: `${BASE}409.webp`, veg: true, category: 'main'     },
+      { id: 410, name: 'Appam with Stew (Kerala)',    image: `${BASE}410.webp`, veg: true, category: 'main'     },
+      { id: 411, name: 'Pulihora (Andhra/Telangana)', image: `${BASE}411.webp`, veg: true, category: 'main'     },
+    ],
+  },
+  {
     id: 'sweets-mithai',
     name: 'Sweets & Mithai',
     emoji: '🍬',
@@ -187,4 +207,57 @@ export const menuSections = [
       { id: 45,  name: 'Pulao',              image: img(45),           veg: true, category: 'breads' },
     ],
   },
+];
+
+export const bhajiItems = [
+  { id: 1,  name: 'Desi Bundi Laddo',      price: 165 },
+  { id: 2,  name: 'Gujrati Kachori',        price: 155 },
+  { id: 3,  name: 'Loose Gol Matthi',       price: 169 },
+  { id: 4,  name: 'Loose Mitthi Matthi',    price: 169 },
+  { id: 5,  name: 'Loose Namek Pare',       price: 169 },
+  { id: 6,  name: 'Masala Pare',            price: 179 },
+  { id: 7,  name: 'Pithi Kachori',          price: 165 },
+  { id: 8,  name: 'Sakkar Pare',            price: 90  },
+  { id: 9,  name: 'Atta Dry Fruit Laddoo',  price: 499 },
+  { id: 10, name: 'Atta Panjiri',           price: 499 },
+  { id: 11, name: 'Balushai',               price: 299 },
+  { id: 12, name: 'Besan Dry Fruit Laddo',  price: 499 },
+  { id: 13, name: 'Besan Laddo',            price: 299 },
+  { id: 14, name: 'Chhena Murgi',           price: 299 },
+  { id: 15, name: 'Desi Ghee Bundi',        price: 199 },
+  { id: 16, name: 'Desi Ghee Bundi Ladoo',  price: 299 },
+  { id: 17, name: 'Desi Ghee Gujia',        price: 399 },
+  { id: 18, name: 'Desi Ghee Patisha',      price: 249 },
+  { id: 19, name: 'Dry Fruit Patisha',      price: 299 },
+  { id: 20, name: 'Karachi Halwai',         price: 299 },
+  { id: 21, name: 'Meva Panjiri',           price: 799 },
+];
+
+export const pickleItems = [
+  { id: 22, name: 'Kathal ka Achaar',          price: 349 },
+  { id: 23, name: 'Lal Mirch ka Bharua Achar', price: 399 },
+  { id: 24, name: 'Aam ka Achar',              price: 399 },
+  { id: 25, name: 'Hari Bhari Mirchi',         price: 399 },
+  { id: 26, name: 'Ginger Garlic Pickle',      price: 499 },
+  { id: 27, name: 'Chilli Mix Pickle',          price: 399 },
+];
+
+export const chutneyItems = [
+  { id: 28, name: 'Tomato Chutney',                     price: 399 },
+  { id: 29, name: 'Mint Peanut Chutney',                price: 399 },
+  { id: 30, name: 'Coconut Chutney',                    price: 399 },
+  { id: 31, name: 'Coriander Coconut Chutney',          price: 399 },
+  { id: 32, name: 'Tomato Thokku',                      price: 399 },
+  { id: 33, name: 'Peanut / Groundnut Chutney',         price: 399 },
+  { id: 34, name: 'Moringa Leaves Chutney',             price: 499 },
+  { id: 35, name: 'Green Tomato Chutney',               price: 499 },
+  { id: 36, name: 'Chana Dal Chutney',                  price: 499 },
+  { id: 37, name: 'Mint Yogurt Chutney',                price: 499 },
+  { id: 38, name: 'Methi Chutney',                      price: 399 },
+  { id: 39, name: 'Capsicum Peanut Chutney',            price: 399 },
+  { id: 40, name: 'Red Bell Pepper Chutney',            price: 399 },
+  { id: 41, name: 'Zucchini Chutney',                   price: 399 },
+  { id: 42, name: 'Walnut Chutney',                     price: 599 },
+  { id: 43, name: 'Mango Chutney',                      price: 599 },
+  { id: 44, name: 'Onion Chutney',                      price: 499 },
 ];
