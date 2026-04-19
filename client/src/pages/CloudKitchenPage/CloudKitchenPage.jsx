@@ -166,7 +166,7 @@ function CloudKitchenForm() {
         </div>
       </div>
 
-      <div className="ck-form__group">
+      {/* <div className="ck-form__group">
         <label className="ck-form__label"><span className="ck-form__req">*</span> Select Meals</label>
         <div className="ck-toggle-group">
           {MEALS.map((meal) => (
@@ -177,9 +177,9 @@ function CloudKitchenForm() {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
-      <div className="ck-form__group">
+      {/* <div className="ck-form__group">
         <label className="ck-form__label">
           Select Cuisines <span className="ck-form__optional">(optional — you can choose multiple)</span>
         </label>
@@ -192,7 +192,7 @@ function CloudKitchenForm() {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <div className="ck-form__footer">
         <button type="submit" className="ck-form__submit">Process Now</button>
