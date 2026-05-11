@@ -21,9 +21,16 @@ import ViewMenuCartPage from '../pages/ViewMenuCartPage/ViewMenuCartPage';
 import BlogPage from '../pages/BlogPage/BlogPage';
 import BlogDetailPage from '../pages/BlogDetailPage/BlogDetailPage';
 
+// Admin pages
+import AdminLayout from '../components/AdminLayout/AdminLayout';
+import AdminLoginPage from '../pages/AdminDashboard/AdminLoginPage';
+import AdminDashboard from '../pages/AdminDashboard/AdminDashboard';
+import AdminPanelUsersPage from '../pages/AdminDashboard/AdminPanelUsersPage';
+
 export default function AppRoutes() {
   return (
     <Routes>
+      {/* Public routes */}
       <Route path="/"                      element={<HomePage />} />
       <Route path="/our-menu"              element={<MenuPage />} />
       <Route path="/about"                 element={<AboutPage />} />
@@ -45,6 +52,14 @@ export default function AppRoutes() {
       <Route path="/view-menu-cart"    element={<ViewMenuCartPage />} />
       <Route path="/blog"              element={<BlogPage />} />
       <Route path="/blog/:slug"        element={<BlogDetailPage />} />
+
+      {/* Admin routes */}
+      <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="panel-user" element={<AdminPanelUsersPage />} />
+        <Route path="settings" element={<div className="admin-placeholder">Settings page coming soon</div>} />
+      </Route>
     </Routes>
   );
 }

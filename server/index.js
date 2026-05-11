@@ -3,6 +3,9 @@ import express from 'express';
 import cors from 'cors';
 import { connectDB } from './db.js';
 import Enquiry from './models/Enquiry.js';
+import User from './models/User.js';
+import { protect, requireAdmin, JWT_SECRET } from './middleware/auth.js';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -98,6 +101,177 @@ app.get('/api/reviews', async (req, res) => {
   } catch (err) {
     console.error('Reviews endpoint error:', err);
     res.status(500).json({ error: 'Internal server error' });
+   }
+ });
+
+// ─── Admin Authentication ──────────────────────────────────────────────────────
+// Admin login - get JWT token
+app.post('/api/admin/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id, username: user.username, email: user.email },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        username: user.username,
+        designation: user.designation,
+        status: user.status
+      }
+    });
+  } catch (err) {
+    console.error('Login error:', err.message);
+    res.status(500).json({ error: 'Server error during login' });
+  }
+});
+
+// ─── Admin Panel Users CRUD ────────────────────────────────────────────────────
+// Get all panel users (with optional status filter and search)
+app.get('/api/admin/panel-user', requireAdmin, async (req, res) => {
+  try {
+    const { status, search, page = 1, limit = 20 } = req.query;
+    const query = {};
+
+    if (status && status !== 'All') {
+      query.status = status;
+    }
+
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+        { username: { $regex: search, $options: 'i' } },
+        { phone: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const users = await User.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    const total = await User.countDocuments(query);
+
+    res.json({
+      users,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+        pages: Math.ceil(total / parseInt(limit))
+      }
+    });
+  } catch (err) {
+    console.error('Fetch users error:', err.message);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+// Create a new panel user
+app.post('/api/admin/panel-user', requireAdmin, async (req, res) => {
+  const { name, phone, email, username, password, designation, status } = req.body;
+
+  if (!name || !phone || !email || !username || !password || !designation) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  try {
+    // Check if user with same email or username exists
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }]
+    });
+
+    if (existingUser) {
+      return res.status(400).json({
+        error: existingUser.email === email ? 'Email already exists' : 'Username already exists'
+      });
+    }
+
+    const user = await User.create({
+      name,
+      phone,
+      email,
+      username,
+      password,
+      designation,
+      status: status || 'Hold'
+    });
+
+    const { password: _, ...userWithoutPassword } = user.toObject();
+    res.status(201).json({ success: true, user: userWithoutPassword });
+  } catch (err) {
+    console.error('Create user error:', err.message);
+    res.status(500).json({ error: 'Failed to create user' });
+  }
+});
+
+// Update a panel user
+app.put('/api/admin/panel-user/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { name, phone, email, username, password, designation, status } = req.body;
+
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update fields
+    if (name) user.name = name;
+    if (phone) user.phone = phone;
+    if (email) user.email = email;
+    if (username) user.username = username;
+    if (password) user.password = password; // Will be hashed by pre-save hook
+    if (designation) user.designation = designation;
+    if (status) user.status = status;
+
+    await user.save();
+
+    const { password: _, ...userWithoutPassword } = user.toObject();
+    res.json({ success: true, user: userWithoutPassword });
+  } catch (err) {
+    console.error('Update user error:', err.message);
+    res.status(500).json({ error: 'Failed to update user' });
+  }
+});
+
+// Delete a panel user
+app.delete('/api/admin/panel-user/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ success: true, message: 'User deleted successfully' });
+  } catch (err) {
+    console.error('Delete user error:', err.message);
+    res.status(500).json({ error: 'Failed to delete user' });
   }
 });
 
